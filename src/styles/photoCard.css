@@ -1,0 +1,73 @@
+/* Shared PhotoCard base styles */
+.photo-card {
+  display: block;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.photo-card-button {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  display: block;
+}
+
+.photo-card-button:focus-visible {
+  outline: 2px solid var(--romantic-pink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.photo-card-frame {
+  overflow: hidden;
+}
+
+.photo-card-frame img,
+.photo-card-fallback {
+  width: 100%;
+  display: block;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: #efe6de;
+}
+
+.photo-card-fallback {
+  display: grid;
+  place-items: center;
+  color: rgba(75, 59, 47, 0.7);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 14px;
+  padding: 14px;
+}
+
+.photo-card-caption {
+  display: grid;
+  gap: 6px;
+}
+
+.photo-card-caption strong {
+  display: block;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 14px;
+}
+
+.photo-card-caption span {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 13px;
+  color: rgba(61, 44, 32, 0.82);
+  line-height: 1.5;
+}
+
+.photo-card.is-active {
+  z-index: 10;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-card,
+  .photo-card-button {
+    transition: none !important;
+  }
+}

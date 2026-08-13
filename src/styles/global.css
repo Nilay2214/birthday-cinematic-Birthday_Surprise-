@@ -1,0 +1,134 @@
+:root {
+  /*
+    New Cinematic & Romantic Palette
+    Primary: 70% warm ivory/cream
+    Secondary: 20% blush/dusty rose
+    Accent: 8% burgundy/wine + 2% champagne/pink
+  */
+
+  /* Primitives */
+  --color-ivory: #FFF8F2;
+  --color-cream: #F8EFE8;
+  --color-blush: #F3C6CC;
+  --color-dusty-rose: #C9828F;
+  --color-burgundy: #6E2638;
+  --color-wine: #541C2B;
+  --color-plum: #32131F;
+  --color-champagne: #D9B98C;
+  --color-rose-pink: #E8AAB4;
+  --color-soft-mauve: #B86B7A;
+
+  /* Semantic Variables (Light Theme) */
+  --background-light: var(--color-ivory);
+  --text-primary-light: var(--color-burgundy);
+  --text-secondary-light: var(--color-soft-mauve);
+  --accent-light: var(--color-dusty-rose);
+  --highlight-light: var(--color-rose-pink);
+
+  /* Semantic Variables (Dark Theme) */
+  --background-dark: var(--color-wine);
+  --background-darker: var(--color-plum);
+  --text-primary-dark: var(--color-cream);
+  --text-secondary-dark: rgba(248, 239, 232, 0.78);
+  --accent-dark: var(--color-champagne);
+  --highlight-dark: var(--color-rose-pink);
+
+  /* Shared Semantics */
+  --paper-shadow: rgba(84, 28, 43, 0.12);
+  --accent-glow: rgba(201, 130, 143, 0.16);
+
+  /* DEPRECATED (for reference during refactor) */
+  --ivory: var(--color-cream);
+  --cream: var(--color-cream);
+  --blush: var(--color-blush);
+  --soft-blush: var(--color-blush);
+  --dusty-rose: var(--color-dusty-rose);
+  --romantic-pink: var(--color-rose-pink);
+  --rose: var(--color-soft-mauve);
+  --deep-rose: var(--color-soft-mauve);
+  --rose-pink: var(--color-rose-pink);
+  --burgundy: var(--color-burgundy);
+  --warm-brown: #4A3028; /* to be replaced */
+  --soft-mauve: var(--color-soft-mauve);
+  --champagne: var(--color-champagne);
+  --dark-romantic: var(--color-plum);
+  --text-dark: var(--text-primary-light);
+
+  --bg: var(--background-light); /* Default background */
+  --fg: var(--text-primary-light);
+  --muted: var(--text-secondary-light);
+  --accent: var(--accent-light);
+  --rose-line: rgba(184, 92, 122, 0.24); /* to be replaced */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  background: var(--background-light);
+  color: var(--text-primary-light);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.app-root {
+  min-height: 100vh;
+}
+
+section {
+  padding: clamp(48px, 8vh, 80px) clamp(18px, 4vw, 28px);
+}
+
+.section-label {
+  font-family: Inter, system-ui, sans-serif;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--dusty-rose);
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: 500;
+  margin: 0 0 16px;
+}
+
+.section-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(34px, 5.5vw, 62px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin: 0;
+  color: var(--burgundy);
+  font-weight: 400;
+}
+
+.section-copy {
+  max-width: 520px;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: clamp(15px, 1.35vw, 17px);
+  line-height: 1.9;
+  color: rgba(74, 48, 40, 0.78);
+  margin: 20px 0 0;
+  white-space: pre-line;
+}
+
+.section-copy--light {
+  color: rgba(248, 241, 232, 0.82);
+}
+
+.section-deco-line {
+  display: block;
+  width: 64px;
+  height: 1px;
+  margin-top: 22px;
+  background: linear-gradient(90deg, var(--dusty-rose), transparent);
+  opacity: 0.7;
+}

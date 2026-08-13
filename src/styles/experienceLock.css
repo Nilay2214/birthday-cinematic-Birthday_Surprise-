@@ -1,0 +1,36 @@
+/* Experience lock — blocks all access below the countdown hero until it reaches zero.
+   The hero (countdown / birthday video) sits above the backdrop overlay so it stays
+   the only interactive content while the experience is locked. */
+.experience-hero {
+  position: relative;
+  z-index: 4000;
+}
+
+/* Main memory content while locked: keep mounted but fully non-interactive. */
+.experience-main--locked {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+/* Full-viewport dark backdrop that covers everything below the hero (incl. the
+   music player) during the countdown so the user cannot click or reach them. */
+.experience-lock-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3500;
+  background: radial-gradient(
+    circle at 50% 55%,
+    rgba(18, 12, 17, 0.62) 0%,
+    rgba(18, 12, 17, 0.9) 68%,
+    rgba(10, 5, 9, 0.97) 100%
+  );
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experience-lock-overlay {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,126 @@
+/* Hero birthday video shown after the countdown completes */
+.birthday-video {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(40px, 8vh, 84px) clamp(16px, 4vw, 32px);
+  background:
+    radial-gradient(circle at 50% 18%, rgba(232, 170, 180, 0.06), transparent 40%),
+    linear-gradient(180deg, var(--background-dark) 0%, var(--background-darker) 70%, var(--color-plum) 100%);
+  color: var(--text-primary-dark);
+  overflow: hidden;
+}
+
+.birthday-video-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 42%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.birthday-video-inner {
+  position: relative;
+  z-index: 1;
+  width: min(1080px, 100%);
+  text-align: center;
+}
+
+.birthday-video-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(28px, 4.2vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: var(--text-primary-dark);
+  margin: 0;
+}
+
+.birthday-video-copy {
+  margin: 14px auto 0;
+  max-width: 520px;
+  font-family: Inter, system-ui, sans-serif;
+  color: var(--text-secondary-dark);
+  font-size: clamp(14px, 1.3vw, 16px);
+  line-height: 1.7;
+}
+
+.birthday-video-frame {
+  position: relative;
+  margin-top: 28px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 36px 90px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(232, 170, 180, 0.1);
+}
+
+.birthday-video-player {
+  width: 100%;
+  max-height: 74vh;
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+
+.birthday-video-error {
+  display: grid;
+  place-items: center;
+  min-height: 44vh;
+  font-family: Inter, system-ui, sans-serif;
+  color: rgba(248, 241, 234, 0.85);
+}
+
+.birthday-video-sound {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border: 1px solid rgba(232, 170, 180, 0.22);
+  border-radius: 999px;
+  background: rgba(18, 12, 17, 0.85);
+  color: var(--text-primary-dark);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  animation: birthdayVideoPulse 2.4s ease-in-out infinite;
+}
+
+.birthday-video-sound:focus-visible {
+  outline: 2px solid var(--highlight-dark);
+  outline-offset: 3px;
+}
+
+.birthday-video-hint {
+  margin-top: 20px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  color: rgba(248, 239, 232, 0.55);
+  font-size: clamp(13px, 1.2vw, 15px);
+}
+
+@media (max-width: 620px) {
+  .birthday-video-player {
+    max-height: 60vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .birthday-video-sound {
+    animation: none;
+  }
+}
+
+@keyframes birthdayVideoPulse {
+  0%, 100% {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(232, 183, 200, 0.3);
+  }
+  50% {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 12px rgba(232, 183, 200, 0);
+  }
+}

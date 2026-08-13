@@ -1,0 +1,263 @@
+/* Photo Journey — Premium Editorial Film Story */
+.photo-journey {
+  position: relative;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(243, 198, 204, 0.28), transparent 45%),
+    radial-gradient(ellipse at 85% 90%, rgba(217, 185, 140, 0.12), transparent 42%),
+    linear-gradient(168deg, #FAF4EE 0%, #F5EBE0 50%, #EDE0D4 100%);
+  overflow: hidden;
+  padding: clamp(56px, 8vh, 96px) clamp(16px, 4vw, 48px) clamp(80px, 10vh, 120px);
+}
+
+.photo-journey-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.photo-journey-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 60% 30%, rgba(232, 160, 184, 0.12), transparent 50%);
+}
+
+.photo-journey-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  background-image: radial-gradient(#000 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.photo-journey-inner {
+  position: relative;
+  z-index: 2;
+  width: min(1280px, 100%);
+  margin: 0 auto;
+}
+
+.photo-journey-header {
+  position: relative;
+  z-index: 10;
+  max-width: 620px;
+  margin-bottom: clamp(48px, 7vh, 84px);
+}
+
+.photo-journey-tagline {
+  margin-top: 14px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(17px, 1.8vw, 21px);
+  line-height: 1.75;
+  color: #6E5244;
+}
+
+/* Multi-Act Story Layout */
+.photo-journey-story {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(64px, 10vh, 120px);
+}
+
+.photo-journey-act {
+  position: relative;
+  width: 100%;
+}
+
+/* Act 1: Hero Composition */
+.photo-journey-act--1 {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+}
+
+.photo-journey-item--act1-1 {
+  position: relative;
+  z-index: 3;
+  transform: rotate(-2deg);
+}
+
+.photo-journey-item--act1-2 {
+  position: relative;
+  z-index: 2;
+  transform: rotate(2.2deg) translateY(-20px);
+  margin-left: -8%;
+}
+
+.photo-journey-item--act1-3 {
+  grid-column: 2;
+  position: relative;
+  z-index: 1;
+  transform: rotate(-1.5deg) translateY(10px);
+  margin-top: -10%;
+}
+
+/* Act Chapters */
+.photo-journey-chapter {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: clamp(28px, 4vh, 44px);
+}
+
+.photo-journey-chapter span {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: clamp(11px, 1vw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #B86B79;
+}
+
+.photo-journey-chapter::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(184, 107, 121, 0.28) 0%, transparent 100%);
+}
+
+/* Act 2 & 3 Grid Compositions */
+.photo-journey-act-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3.5vw, 44px);
+  align-items: start;
+}
+
+.photo-journey-act-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.photo-journey-item--act2-1 { transform: rotate(1.8deg); }
+.photo-journey-item--act2-2 { transform: rotate(-2deg) translateY(-14px); }
+.photo-journey-item--act2-3 { transform: rotate(1.2deg) translateY(12px); }
+
+.photo-journey-item--act3-1 { transform: rotate(-1.8deg); }
+.photo-journey-item--act3-2 { transform: rotate(2deg) translateY(8px); }
+
+/* Editorial Card Styling */
+.photo-journey-item {
+  position: relative;
+  filter: none !important;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.photo-journey-item:hover {
+  z-index: 20 !important;
+  transform: translateY(-8px) rotate(0deg) scale(1.02) !important;
+}
+
+.photo-journey-item .photo-card {
+  background: #FFFDF9;
+  border: 1px solid rgba(212, 175, 150, 0.28);
+  box-shadow:
+    0 20px 48px rgba(54, 28, 36, 0.07),
+    0 4px 14px rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+  padding: clamp(12px, 1.4vw, 18px);
+  filter: none !important;
+}
+
+.photo-journey-item .photo-card-frame {
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.photo-journey-item .photo-card-frame img {
+  border: 5px solid #FDFBF7;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  filter: none !important;
+}
+
+.photo-journey-item .photo-card-caption {
+  padding-top: 12px;
+}
+
+.photo-journey-item .photo-card-caption strong {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13px;
+  color: #7A3B49;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.photo-journey-item .photo-card-caption span {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 13px;
+  color: #5C4638;
+}
+
+/* Tablet & Mobile Responsiveness */
+@media (max-width: 980px) {
+  .photo-journey-act--1 {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .photo-journey-item--act1-2 {
+    margin-left: 0;
+    transform: rotate(1.5deg);
+  }
+  .photo-journey-item--act1-3 {
+    grid-column: span 2;
+    max-width: 420px;
+    margin: 0 auto;
+    transform: rotate(-1deg);
+  }
+  .photo-journey-act-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .photo-journey {
+    padding: 48px 18px 72px;
+  }
+
+  .photo-journey-header {
+    margin-bottom: 36px;
+  }
+
+  .photo-journey-story {
+    gap: 48px;
+  }
+
+  .photo-journey-act--1,
+  .photo-journey-act-grid,
+  .photo-journey-act-grid--two {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .photo-journey-item {
+    width: 100% !important;
+    max-width: 360px !important;
+    margin: 0 auto !important;
+    grid-column: auto !important;
+    filter: none !important;
+  }
+
+  .photo-journey-item:nth-child(odd) {
+    transform: rotate(-1.5deg) !important;
+  }
+  .photo-journey-item:nth-child(even) {
+    transform: rotate(1.5deg) !important;
+  }
+
+  .photo-journey-item:hover {
+    transform: translateY(-4px) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-journey-item {
+    transition: none !important;
+    transform: none !important;
+  }
+}

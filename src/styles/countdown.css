@@ -1,0 +1,211 @@
+/* Cinematic birthday countdown styles */
+.countdown-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(48px, 10vh, 96px) 24px;
+  background: radial-gradient(
+    circle at 50% 20%,
+    var(--background-dark) 0%,
+    var(--background-darker) 90%
+  );
+  color: var(--text-primary-dark);
+  overflow: hidden;
+}
+
+.countdown-background {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      circle at 20% 30%,
+      rgba(232, 170, 180, 0.05),
+      transparent 18%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(110, 38, 56, 0.09),
+      transparent 12%
+    );
+  opacity: 0.6;
+  pointer-events: none;
+  transform: scale(1.03);
+  animation: countdownBackgroundFloat 22s ease-in-out infinite;
+}
+
+.countdown-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 35%,
+    rgba(0, 0, 0, 0.35) 75%,
+    var(--color-plum) 100%
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.countdown-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><filter id='f'><feTurbulence baseFrequency='0.78' numOctaves='1' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23f)' opacity='0.03'/></svg>");
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.countdown-inner {
+  position: relative;
+  z-index: 1;
+  width: min(1080px, 100%);
+  text-align: center;
+}
+
+.countdown-opening {
+  max-width: 520px;
+  margin: 0 auto 36px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.75;
+  color: var(--text-secondary-dark);
+  white-space: pre-line;
+}
+
+.countdown-heading {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(22px, 2.2vw, 28px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--highlight-dark);
+  margin: 0 0 28px;
+  opacity: 0.9;
+}
+
+.countdown-copy {
+  max-width: 720px;
+  margin: 0 auto 48px;
+  font-family: Inter, system-ui, sans-serif;
+  color: var(--text-secondary-dark);
+  font-size: clamp(14px, 1.4vw, 16px);
+  line-height: 1.8;
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  gap: 28px;
+  justify-items: center;
+  align-items: start;
+}
+
+.countdown-item {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  width: 100%;
+}
+
+.countdown-value {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(60px, 8vw, 120px);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: var(--accent-dark);
+  min-height: 1.1em;
+  display: inline-block;
+  text-shadow: 0 0 24px rgba(217, 185, 140, 0.2);
+}
+
+.countdown-label {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: clamp(11px, 1.2vw, 14px);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(248, 239, 232, 0.58);
+}
+
+.countdown-note {
+  margin-top: 42px;
+  font-family: Inter, system-ui, sans-serif;
+  color: rgba(243, 243, 243, 0.68);
+  font-size: clamp(12px, 1.3vw, 14px);
+}
+
+.countdown-test-controls {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+}
+
+.countdown-test-button {
+  border: 1px solid rgba(217, 185, 140, 0.35);
+  background: rgba(255, 248, 242, 0.08);
+  color: var(--color-cream);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.countdown-test-button:hover,
+.countdown-test-button:focus-visible {
+  transform: translateY(-1px);
+  background: rgba(255, 248, 242, 0.16);
+  border-color: rgba(217, 185, 140, 0.7);
+  outline: none;
+}
+
+.countdown-invalid {
+  color: rgba(255, 255, 255, 0.82);
+  font-family: Inter, system-ui, sans-serif;
+  max-width: 620px;
+  margin: 0 auto;
+  font-size: clamp(16px, 2vw, 20px);
+}
+
+@media (max-width: 860px) {
+  .countdown-grid {
+    grid-template-columns: repeat(2, minmax(110px, 1fr));
+    gap: 18px;
+  }
+}
+
+@media (max-width: 520px) {
+  .countdown-section {
+    padding: clamp(36px, 8vh, 68px) 18px;
+  }
+
+  .countdown-heading {
+    margin-bottom: 20px;
+  }
+
+  .countdown-copy {
+    margin-bottom: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .countdown-background,
+  .countdown-grain {
+    animation: none;
+  }
+}
+
+@keyframes countdownBackgroundFloat {
+  0% {
+    transform: scale(1.04) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.045) translate(-8px, 6px);
+  }
+  100% {
+    transform: scale(1.04) translate(0, 0);
+  }
+}
