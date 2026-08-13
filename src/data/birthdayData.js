@@ -23,7 +23,7 @@ const birthdayData = {
     videoFirst:
       "Another moment I didn't want to let disappear.",
     videoSecond:
-      "Some moments deserve a little more time.",
+      "Some memories are better felt than explained.",
     memoryUniverse:
       "Little moments, different places, different versions of you — somehow they all become part of what makes you, you.",
   },
@@ -201,7 +201,7 @@ const birthdayData = {
     },
     second: {
       src: "/assets/converted/VID20260707170652-converted.mp4",
-      title: "And somehow, the little things stay.",
+      title: "A little moment worth remembering.",
       poster: "/assets/optimized/video1_poster.webp",
       placeholder: "Your second memory video.",
     },

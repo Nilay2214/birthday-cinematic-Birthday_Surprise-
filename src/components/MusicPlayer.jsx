@@ -22,9 +22,8 @@ export default function MusicPlayer({ autoStart = false, locked = false }) {
     if (!audio) return
 
     audio.loop = true
-    audio.volume = 0.46
-    audio.muted = isMuted
-    audio.preload = 'metadata'
+    audio.volume = 0.5
+    audio.preload = 'auto'
 
     const handleLoadedMetadata = () => {
       setDuration(audio.duration || 0)
@@ -62,13 +61,7 @@ export default function MusicPlayer({ autoStart = false, locked = false }) {
       audio.removeEventListener('pause', handlePause)
       audio.removeEventListener('error', handleError)
     }
-  }, [musicPath, isMuted])
-
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-    audio.muted = isMuted
-  }, [isMuted])
+  }, [musicPath])
 
   const handlePlayPause = async () => {
     const audio = audioRef.current

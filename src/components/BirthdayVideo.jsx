@@ -141,7 +141,7 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
             preload="auto"
             controls
             autoPlay={false}
-            muted={isMuted}
+            defaultMuted={true}
             onCanPlay={() => {
               if (videoStatus === 'loading') setVideoStatus('ready')
             }}
@@ -150,6 +150,9 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
               if (videoRef.current && !videoRef.current.muted) {
                 setIsMuted(false)
               }
+            }}
+            onPause={() => {
+              if (videoStatus === 'playing') setVideoStatus('ready')
             }}
             onVolumeChange={() => {
               if (videoRef.current) {

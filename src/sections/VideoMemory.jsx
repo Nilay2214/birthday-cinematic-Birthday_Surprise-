@@ -88,7 +88,7 @@ export default function VideoMemory({ videoData, message, variant = 'light' }) {
   }, [isLoaded])
 
   const togglePlay = async () => {
-    if (!hasVideo || hasError) return
+    if (!hasVideo) return
 
     if (!isLoaded) {
       pendingPlayRef.current = true
@@ -101,13 +101,16 @@ export default function VideoMemory({ videoData, message, variant = 'light' }) {
 
     if (video.paused) {
       try {
-        video.defaultMuted = false
-        video.muted = false
-        video.volume = 1
         await video.play()
         setShowControls(false)
       } catch {
-        setHasError(true)
+        try {
+          video.muted = true
+          await video.play()
+          setShowControls(false)
+        } catch {
+          // Keep video element mounted and visible
+        }
       }
     } else {
       video.pause()
@@ -120,12 +123,12 @@ export default function VideoMemory({ videoData, message, variant = 'light' }) {
     if (!isLoaded || !video || !pendingPlayRef.current) return
 
     pendingPlayRef.current = false
-    video.defaultMuted = false
-    video.muted = false
-    video.volume = 1
     video.play()
       .then(() => setShowControls(false))
-      .catch(() => setHasError(true))
+      .catch(() => {
+        video.muted = true
+        video.play().then(() => setShowControls(false)).catch(() => {})
+      })
   }, [isLoaded])
 
   const handleVideoClick = () => {
