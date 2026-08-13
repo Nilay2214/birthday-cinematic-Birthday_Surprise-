@@ -31,21 +31,32 @@ export default function MusicPlayer({ autoStart = false, locked = false }) {
       setIsReady(true)
     }
     const handleTimeUpdate = () => setCurrentTime(audio.currentTime)
-    const handlePlay = () => setIsPlaying(true)
+    const handlePlay = () => {
+      setIsPlaying(true)
+      setHasError(false)
+    }
     const handlePause = () => setIsPlaying(false)
     const handleError = () => {
-      setHasError(true)
-      setErrorMessage('Add your music file at public/assets/music/birthday.mp3')
+      if (audio.error) {
+        setHasError(true)
+        setErrorMessage('Unable to play music file at public/assets/music/Saudebazi.mpeg')
+      }
     }
 
     audio.addEventListener('loadedmetadata', handleLoadedMetadata)
+    audio.addEventListener('canplay', handleLoadedMetadata)
     audio.addEventListener('timeupdate', handleTimeUpdate)
     audio.addEventListener('play', handlePlay)
     audio.addEventListener('pause', handlePause)
     audio.addEventListener('error', handleError)
 
+    if (audio.readyState >= 1) {
+      handleLoadedMetadata()
+    }
+
     return () => {
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
+      audio.removeEventListener('canplay', handleLoadedMetadata)
       audio.removeEventListener('timeupdate', handleTimeUpdate)
       audio.removeEventListener('play', handlePlay)
       audio.removeEventListener('pause', handlePause)
@@ -61,27 +72,31 @@ export default function MusicPlayer({ autoStart = false, locked = false }) {
 
   const handlePlayPause = async () => {
     const audio = audioRef.current
-    if (!audio || isDisabled) return
+    if (!audio) return
 
     if (audio.paused) {
       try {
+        audio.muted = false
+        audio.volume = 0.5
         await audio.play()
+        setIsPlaying(true)
+        setHasError(false)
       } catch (error) {
-        setHasError(true)
         setIsPlaying(false)
       }
     } else {
       audio.pause()
+      setIsPlaying(false)
     }
   }
 
   // After the birthday video ends, this auto-starts the music.
   useEffect(() => {
-    if (autoStart && isReady && !isPlaying) {
+    if (autoStart && !isPlaying) {
       handlePlayPause()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoStart, isReady])
+  }, [autoStart])
 
   const toggleMute = () => {
     const audio = audioRef.current

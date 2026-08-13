@@ -76,6 +76,7 @@
   left: 50%;
   bottom: 22px;
   transform: translateX(-50%);
+  z-index: 20;
   display: inline-flex;
   align-items: center;
   gap: 10px;

@@ -12,6 +12,7 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
   // State machine: 'loading' | 'ready' | 'playing' | 'ended' | 'error'
   const [videoStatus, setVideoStatus] = useState('loading')
   const [soundBlocked, setSoundBlocked] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
 
   const videoConfig = customVideo || birthdayData.videos?.main || {
     src: '/assets/converted/VID_20260813205638-converted.mp4',
@@ -48,6 +49,7 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
     video.defaultMuted = !withSound
     video.muted = !withSound
     video.volume = withSound ? 1 : 0
+    setIsMuted(!withSound)
   }, [])
 
   const startVideo = useCallback((withSound) => {
@@ -60,6 +62,7 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
       attempt
         .then(() => {
           setVideoStatus('playing')
+          setIsMuted(!withSound)
         })
         .catch(() => {
           if (withSound) {
@@ -101,6 +104,7 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
 
     syncAudioState(true)
     setSoundBlocked(false)
+    setIsMuted(false)
     video.play().then(() => setVideoStatus('playing')).catch(() => {})
   }
 
@@ -120,62 +124,29 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
         </header>
 
         <div className="birthday-video-frame" style={{ position: 'relative', minHeight: '260px' }}>
-          {videoStatus === 'error' ? (
-            <div
-              className="birthday-video-error"
-              role="status"
-              style={{
-                padding: '40px 24px',
-                textAlign: 'center',
-                background: 'rgba(26, 14, 20, 0.85)',
-                borderRadius: '16px',
-                border: '1px solid rgba(232, 160, 184, 0.2)',
-              }}
-            >
-              <div style={{ fontSize: '1.2rem', marginBottom: '12px', color: '#F6D6DF' }}>
-                Video Moment
-              </div>
-              <p style={{ fontSize: '0.95rem', color: 'rgba(248, 241, 234, 0.8)', marginBottom: '24px' }}>
-                Ready to continue to the photo reveal experience.
-              </p>
-              <button
-                type="button"
-                className="btn-primary"
-                onClick={handleProceed}
-                style={{
-                  padding: '12px 28px',
-                  borderRadius: '30px',
-                  background: '#E8A0B8',
-                  color: '#120C11',
-                  border: 'none',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                Continue to Birthday Reveal →
-              </button>
-            </div>
-          ) : (
-            <video
-              ref={videoRef}
-              className="birthday-video-player"
-              src={src}
-              poster={poster}
-              playsInline
-              preload="auto"
-              controls
-              autoPlay={false}
-              muted={false}
-              onCanPlay={() => {
-                if (videoStatus === 'loading') setVideoStatus('ready')
-              }}
-              onPlay={() => setVideoStatus('playing')}
-              onError={() => setVideoStatus('error')}
-              aria-label={`Play ${title}`}
-            />
-          )}
+          <video
+            ref={videoRef}
+            className="birthday-video-player"
+            src={src}
+            poster={poster}
+            playsInline
+            preload="auto"
+            controls
+            autoPlay={false}
+            muted={isMuted}
+            onCanPlay={() => {
+              if (videoStatus === 'loading') setVideoStatus('ready')
+            }}
+            onPlay={() => {
+              setVideoStatus('playing')
+            }}
+            onError={() => {
+              if (videoStatus === 'loading') setVideoStatus('ready')
+            }}
+            aria-label={`Play ${title}`}
+          />
 
-          {soundBlocked && videoStatus !== 'error' && (
+          {(soundBlocked || isMuted) && (
             <button
               type="button"
               className="birthday-video-sound"
