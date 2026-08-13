@@ -98,21 +98,25 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
     return () => video.removeEventListener('ended', onEnded)
   }, [handleProceed])
 
-  const handleEnableSound = async () => {
+  const handleEnableSound = async (e) => {
+    if (e && e.stopPropagation) {
+      e.stopPropagation()
+    }
+
     const video = videoRef.current
     if (!video) return
 
     video.defaultMuted = false
     video.muted = false
     video.volume = 1
-    setIsMuted(false)
-    setSoundBlocked(false)
 
     try {
       await video.play()
+      setIsMuted(false)
+      setSoundBlocked(false)
       setVideoStatus('playing')
-    } catch (e) {
-      console.warn('Play with sound request:', e)
+    } catch (err) {
+      console.warn('Play with sound request rejected by browser:', err)
     }
   }
 
@@ -131,7 +135,10 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
           <p className="birthday-video-copy">A candid little memory, just for you.</p>
         </header>
 
-        <div className="birthday-video-frame" style={{ position: 'relative', minHeight: '260px' }}>
+        <div
+          className="birthday-video-frame"
+          style={{ position: 'relative', minHeight: '260px' }}
+        >
           <video
             ref={videoRef}
             className="birthday-video-player"
@@ -142,6 +149,7 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
             controls
             autoPlay={false}
             defaultMuted={true}
+            onClick={isMuted ? handleEnableSound : undefined}
             onCanPlay={() => {
               if (videoStatus === 'loading') setVideoStatus('ready')
             }}
@@ -149,6 +157,7 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
               setVideoStatus('playing')
               if (videoRef.current && !videoRef.current.muted) {
                 setIsMuted(false)
+                setSoundBlocked(false)
               }
             }}
             onPause={() => {
