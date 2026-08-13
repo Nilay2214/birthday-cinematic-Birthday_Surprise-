@@ -98,14 +98,22 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
     return () => video.removeEventListener('ended', onEnded)
   }, [handleProceed])
 
-  const handleEnableSound = () => {
+  const handleEnableSound = async () => {
     const video = videoRef.current
     if (!video) return
 
-    syncAudioState(true)
-    setSoundBlocked(false)
+    video.defaultMuted = false
+    video.muted = false
+    video.volume = 1
     setIsMuted(false)
-    video.play().then(() => setVideoStatus('playing')).catch(() => {})
+    setSoundBlocked(false)
+
+    try {
+      await video.play()
+      setVideoStatus('playing')
+    } catch (e) {
+      console.warn('Play with sound request:', e)
+    }
   }
 
   return (
@@ -139,6 +147,14 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
             }}
             onPlay={() => {
               setVideoStatus('playing')
+              if (videoRef.current && !videoRef.current.muted) {
+                setIsMuted(false)
+              }
+            }}
+            onVolumeChange={() => {
+              if (videoRef.current) {
+                setIsMuted(videoRef.current.muted)
+              }
             }}
             onError={() => {
               if (videoStatus === 'loading') setVideoStatus('ready')
@@ -146,7 +162,7 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
             aria-label={`Play ${title}`}
           />
 
-          {(soundBlocked || isMuted) && (
+          {isMuted && (
             <button
               type="button"
               className="birthday-video-sound"
