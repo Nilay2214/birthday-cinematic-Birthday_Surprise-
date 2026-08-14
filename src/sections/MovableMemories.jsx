@@ -10,14 +10,22 @@ gsap.registerPlugin(ScrollTrigger)
 const DRAG_THRESHOLD = 8
 
 const scatterLayout = [
-  { x: 12, y: 18, rotate: -4.0, scale: 1.02, w: 250 },
-  { x: 48, y: 15, rotate: 3.2, scale: 0.96, w: 230 },
-  { x: 82, y: 20, rotate: -2.5, scale: 0.94, w: 225 },
-  { x: 22, y: 48, rotate: 2.8, scale: 1.05, w: 260 },
-  { x: 76, y: 46, rotate: -3.0, scale: 0.98, w: 240 },
-  { x: 48, y: 64, rotate: 2.0, scale: 0.96, w: 230 },
-  { x: 15, y: 80, rotate: -2.8, scale: 0.94, w: 225 },
-  { x: 82, y: 78, rotate: 2.5, scale: 0.98, w: 235 },
+  // 0: HERO CARD (Center-Anchor)
+  { x: 46, y: 46, rotate: 2.2, scale: 1.05, w: 255, isHero: true },
+  // 1: Primary (Mid-Left)
+  { x: 18, y: 42, rotate: -3.2, scale: 0.98, w: 235 },
+  // 2: Supporting (Upper-Center)
+  { x: 36, y: 18, rotate: 1.5, scale: 0.95, w: 210 },
+  // 3: Primary (Upper-Right)
+  { x: 74, y: 22, rotate: -2.1, scale: 1.00, w: 235 },
+  // 4: Primary (Mid-Right)
+  { x: 82, y: 52, rotate: -1.8, scale: 0.98, w: 230 },
+  // 5: Supporting (Lower-Center)
+  { x: 58, y: 72, rotate: 2.2, scale: 0.96, w: 215 },
+  // 6: Supporting (Bottom-Left)
+  { x: 16, y: 78, rotate: -2.7, scale: 0.94, w: 205 },
+  // 7: Supporting (Bottom-Right)
+  { x: 82, y: 80, rotate: 1.8, scale: 0.95, w: 210 },
 ]
 
 function getScatter(index) {
