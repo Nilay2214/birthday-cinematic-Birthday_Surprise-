@@ -4,9 +4,8 @@
 
 .final-message-section {
   position: relative;
-  min-height: 100vh;
-  min-height: 100dvh;
-  padding: clamp(80px, 12vh, 140px) clamp(16px, 4vw, 36px);
+  min-height: auto;
+  padding: clamp(48px, 6vh, 80px) clamp(16px, 4vw, 36px);
   background:
     radial-gradient(ellipse at 50% 20%, rgba(245, 206, 213, 0.3), transparent 50%),
     radial-gradient(ellipse at 80% 80%, rgba(222, 194, 155, 0.16), transparent 45%),
@@ -42,10 +41,10 @@
   background: #FFFFFF;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-xl);
-  padding: clamp(36px, 6vw, 72px) clamp(24px, 5vw, 64px);
+  padding: clamp(28px, 4vw, 48px) clamp(20px, 3.5vw, 44px);
   box-shadow:
-    0 40px 100px rgba(76, 23, 36, 0.12),
-    0 12px 32px rgba(76, 23, 36, 0.05),
+    0 32px 80px rgba(76, 23, 36, 0.1),
+    0 8px 24px rgba(76, 23, 36, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
   text-align: center;
   overflow: hidden;

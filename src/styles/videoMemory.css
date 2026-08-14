@@ -4,7 +4,8 @@
 
 .video-memory {
   position: relative;
-  padding: clamp(72px, 10vh, 120px) clamp(20px, 4vw, 36px);
+  min-height: auto;
+  padding: clamp(40px, 5vh, 64px) clamp(16px, 4vw, 36px);
   overflow: hidden;
 }
 
@@ -25,8 +26,8 @@
 
 .video-memory-title {
   font-family: var(--font-display);
-  font-size: clamp(30px, 4.8vw, 52px);
-  margin-top: 8px;
+  font-size: clamp(28px, 4.2vw, 46px);
+  margin-top: 6px;
   line-height: 1.08;
   letter-spacing: -0.025em;
   font-weight: 400;
@@ -47,13 +48,13 @@
 
 .video-memory-inner {
   position: relative;
-  width: min(1080px, 100%);
+  width: min(920px, 100%);
   margin: 0 auto;
 }
 
 .video-memory-intro {
   max-width: 640px;
-  margin-bottom: clamp(32px, 5vw, 48px);
+  margin-bottom: clamp(20px, 3vh, 32px);
 }
 
 .video-memory--dark .section-label {

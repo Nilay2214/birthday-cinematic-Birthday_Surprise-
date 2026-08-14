@@ -4,8 +4,8 @@
 
 .movable-memories {
   position: relative;
-  min-height: 110vh;
-  padding: clamp(72px, 10vh, 120px) clamp(20px, 4vw, 44px) clamp(80px, 10vh, 110px);
+  min-height: auto;
+  padding: clamp(40px, 5vh, 64px) clamp(16px, 4vw, 40px);
   background:
     radial-gradient(ellipse at 75% 12%, rgba(245, 206, 213, 0.22), transparent 45%),
     radial-gradient(ellipse at 18% 88%, rgba(222, 194, 155, 0.12), transparent 40%),
@@ -28,14 +28,14 @@
 
 .movable-memories-intro {
   max-width: 580px;
-  margin-bottom: clamp(32px, 4.5vw, 52px);
+  margin-bottom: clamp(20px, 3vh, 32px);
 }
 
 .movable-memories-hint {
-  margin: 18px 0 0;
+  margin: 10px 0 0;
   font-family: var(--font-display);
-  font-size: clamp(15.5px, 1.4vw, 18px);
-  line-height: 1.6;
+  font-size: clamp(15px, 1.3vw, 17px);
+  line-height: 1.5;
   color: var(--color-dusty-rose);
   font-style: italic;
 }
@@ -43,8 +43,8 @@
 .movable-memories-table {
   position: relative;
   width: 100%;
-  min-height: clamp(680px, 86vh, 920px);
-  padding: clamp(24px, 3vw, 40px);
+  min-height: clamp(480px, 56vh, 620px);
+  padding: clamp(16px, 2.5vw, 32px);
   border-radius: var(--radius-xl);
   background:
     linear-gradient(160deg, rgba(255, 255, 255, 0.6) 0%, transparent 45%),
@@ -139,12 +139,17 @@
 }
 
 @media (max-width: 760px) {
+  .movable-memories {
+    padding: 36px 14px 48px;
+  }
+
   .movable-memories-table {
     min-height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    padding: 32px 18px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px 8px;
+    border-radius: var(--radius-lg);
   }
 
   .movable-memories-card {
@@ -152,13 +157,13 @@
     left: auto !important;
     top: auto !important;
     width: 100% !important;
-    max-width: 360px;
+    max-width: 100% !important;
     margin: 0 auto;
-    transform: rotate(-1.5deg) !important;
+    transform: rotate(-1deg) !important;
   }
 
   .movable-memories-card:nth-child(even) {
-    transform: rotate(1.2deg) !important;
+    transform: rotate(1deg) !important;
   }
 }
 

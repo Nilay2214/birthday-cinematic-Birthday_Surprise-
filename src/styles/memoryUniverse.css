@@ -4,8 +4,8 @@
 
 .memory-universe {
   position: relative;
-  min-height: 120vh;
-  padding: clamp(80px, 12vh, 130px) clamp(16px, 4vw, 36px) clamp(80px, 10vh, 110px);
+  min-height: auto;
+  padding: clamp(40px, 5vh, 68px) clamp(16px, 4vw, 36px) clamp(44px, 6vh, 72px);
   background:
     radial-gradient(ellipse at 50% 25%, rgba(201, 130, 143, 0.08), transparent 45%),
     linear-gradient(180deg, var(--background-darker) 0%, #100408 40%, var(--color-deep-black) 100%);
@@ -16,30 +16,30 @@
   width: min(var(--content-max), 100%);
   margin: 0 auto;
   display: grid;
-  gap: 32px;
+  gap: 20px;
 }
 
 .memory-universe-intro {
   max-width: 720px;
   margin: 0 auto;
   text-align: center;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .memory-universe-label {
   font-family: var(--font-label);
-  font-size: clamp(11px, 1vw, 12px);
+  font-size: clamp(10.5px, 0.95vw, 12px);
   font-weight: 600;
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--color-champagne);
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   opacity: 0.88;
 }
 
 .memory-universe-title {
   font-family: var(--font-display);
-  font-size: clamp(36px, 5.5vw, 60px);
+  font-size: clamp(30px, 4.5vw, 50px);
   line-height: 1.05;
   letter-spacing: -0.03em;
   color: var(--color-ivory);
@@ -48,19 +48,19 @@
 }
 
 .memory-universe-copy {
-  margin: 18px auto 0;
+  margin: 10px auto 0;
   max-width: 620px;
   color: var(--text-secondary-dark);
   font-family: var(--font-body);
-  font-size: clamp(15.5px, 1.2vw, 17.5px);
+  font-size: clamp(14.5px, 1.1vw, 16.5px);
   font-weight: 300;
-  line-height: 1.8;
+  line-height: 1.65;
 }
 
 .memory-universe-canvas-wrap {
   position: relative;
-  height: clamp(440px, 62vh, 800px);
-  min-height: clamp(440px, 62vh, 800px);
+  height: clamp(380px, 50vh, 520px);
+  min-height: clamp(380px, 50vh, 520px);
   border-radius: var(--radius-xl);
   overflow: hidden;
   background:

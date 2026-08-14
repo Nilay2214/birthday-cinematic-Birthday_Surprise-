@@ -201,7 +201,6 @@ export default function App() {
         aria-hidden={!loaded || locked}
         inert={locked ? '' : undefined}
         className={`experience-main${locked ? ' experience-main--locked' : ''}`}
-        style={{ minHeight: '100vh' }}
       >
         <BirthdayReveal />
         <PhotoJourney />

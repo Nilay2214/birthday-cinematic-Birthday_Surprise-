@@ -10,14 +10,14 @@ gsap.registerPlugin(ScrollTrigger)
 const DRAG_THRESHOLD = 8
 
 const scatterLayout = [
-  { x: 12, y: 10, rotate: -4, scale: 1.04, w: 300 },
-  { x: 55, y: 8, rotate: 3.5, scale: 0.94, w: 260 },
-  { x: 78, y: 18, rotate: -2, scale: 0.88, w: 230 },
-  { x: 20, y: 36, rotate: 2.2, scale: 1.06, w: 320 },
-  { x: 58, y: 38, rotate: -3, scale: 0.96, w: 280 },
-  { x: 36, y: 56, rotate: 1.5, scale: 1, w: 290 },
-  { x: 10, y: 66, rotate: 3.5, scale: 0.9, w: 240 },
-  { x: 65, y: 63, rotate: -2, scale: 0.96, w: 270 },
+  { x: 16, y: 22, rotate: -3.5, scale: 1.02, w: 230 },
+  { x: 42, y: 18, rotate: 3, scale: 0.96, w: 215 },
+  { x: 68, y: 22, rotate: -2, scale: 0.94, w: 205 },
+  { x: 86, y: 36, rotate: 2.5, scale: 0.92, w: 195 },
+  { x: 20, y: 68, rotate: 2, scale: 1, w: 225 },
+  { x: 44, y: 72, rotate: -2.5, scale: 0.98, w: 215 },
+  { x: 66, y: 68, rotate: 1.5, scale: 0.96, w: 210 },
+  { x: 84, y: 74, rotate: -3, scale: 0.95, w: 205 },
 ]
 
 function getScatter(index) {
