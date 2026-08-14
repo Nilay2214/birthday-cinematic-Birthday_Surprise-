@@ -113,12 +113,7 @@ export default function App() {
     window.location.search.includes('testCountdown=true')
 
   const birthdayUnlocked = isBirthdayUnlocked(birthdayData.birthDate)
-  const sessionRevealed =
-    typeof window !== 'undefined' && sessionStorage.getItem('birthday_revealed') === 'true'
-
-  const initialStage = (!testCountdownEnabled && sessionRevealed)
-    ? EXPERIENCE_STAGE.MEMORIES
-    : (!testCountdownEnabled && (testModeEnabled || birthdayUnlocked))
+  const initialStage = (!testCountdownEnabled && (testModeEnabled || birthdayUnlocked))
     ? EXPERIENCE_STAGE.AGE_REVEAL
     : EXPERIENCE_STAGE.COUNTDOWN
 
@@ -175,11 +170,6 @@ export default function App() {
   }, [])
 
   const handleVideoEnded = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        sessionStorage.setItem('birthday_revealed', 'true')
-      } catch (_) {}
-    }
     setStage((s) => (s === EXPERIENCE_STAGE.VIDEO ? EXPERIENCE_STAGE.MEMORIES : s))
     window.requestAnimationFrame(() => {
       setTimeout(() => {
@@ -207,9 +197,9 @@ export default function App() {
         {stage === EXPERIENCE_STAGE.AGE_REVEAL && (
           <AgeReveal onComplete={handleAgeRevealComplete} />
         )}
-        {(stage === EXPERIENCE_STAGE.AGE_REVEAL || stage === EXPERIENCE_STAGE.VIDEO) && (
+        {stage === EXPERIENCE_STAGE.VIDEO && (
           <BirthdayVideo
-            autoStart={stage === EXPERIENCE_STAGE.VIDEO}
+            autoStart
             video={birthdayData.videos?.main}
             onVideoEnded={handleVideoEnded}
           />

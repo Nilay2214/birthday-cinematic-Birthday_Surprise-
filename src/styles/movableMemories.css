@@ -43,8 +43,8 @@
 .movable-memories-table {
   position: relative;
   width: 100%;
-  min-height: clamp(560px, 64vh, 700px);
-  padding: clamp(20px, 2.5vw, 36px);
+  min-height: clamp(660px, 80vh, 880px);
+  padding: clamp(24px, 3vw, 44px);
   border-radius: var(--radius-xl);
   background:
     linear-gradient(160deg, rgba(255, 255, 255, 0.6) 0%, transparent 45%),
@@ -140,15 +140,15 @@
 
 @media (max-width: 760px) {
   .movable-memories {
-    padding: 36px 14px 48px;
+    padding: 40px 16px 56px;
   }
 
   .movable-memories-table {
     min-height: auto;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 16px 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 12px;
+    padding: 20px 12px;
     border-radius: var(--radius-lg);
   }
 
@@ -159,11 +159,15 @@
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 auto;
-    transform: rotate(-1deg) !important;
   }
 
-  .movable-memories-card:nth-child(even) {
-    transform: rotate(1deg) !important;
-  }
+  .movable-memories-card:nth-child(1) { transform: rotate(-2deg); margin-top: 0; }
+  .movable-memories-card:nth-child(2) { transform: rotate(2.5deg); margin-top: 14px; }
+  .movable-memories-card:nth-child(3) { transform: rotate(1.8deg); margin-top: -4px; }
+  .movable-memories-card:nth-child(4) { transform: rotate(-2.2deg); margin-top: 10px; }
+  .movable-memories-card:nth-child(5) { transform: rotate(-1.5deg); margin-top: 0; }
+  .movable-memories-card:nth-child(6) { transform: rotate(2deg); margin-top: 12px; }
+  .movable-memories-card:nth-child(7) { transform: rotate(1.2deg); margin-top: -2px; }
+  .movable-memories-card:nth-child(8) { transform: rotate(-2.5deg); margin-top: 8px; }
 }
 
