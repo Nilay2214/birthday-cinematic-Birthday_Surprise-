@@ -152,31 +152,22 @@ export default function MovableMemories() {
       const tl = gsap.timeline({ paused: true })
       cardsRef.current.forEach((card, index) => {
         if (!card) return
-        const layout = getScatter(index)
-        tl.fromTo(
+        tl.from(
           card,
           {
-            y: 30,
-            rotation: layout.rotate + 6,
-            scale: layout.scale * 0.88,
+            y: 28,
             autoAlpha: 0,
+            duration: 0.7,
+            ease: 'power2.out',
+            clearProps: 'all',
           },
-          {
-            y: 0,
-            rotation: layout.rotate,
-            scale: layout.scale,
-            autoAlpha: 1,
-            duration: 0.8,
-            ease: 'power3.out',
-            clearProps: 'y,opacity,visibility',
-          },
-          index * 0.08
+          index * 0.07
         )
       })
 
       ScrollTrigger.create({
         trigger: tableRef.current,
-        start: 'top 82%',
+        start: 'top 85%',
         animation: tl,
         once: true,
       })
