@@ -43,8 +43,8 @@
 .movable-memories-table {
   position: relative;
   width: 100%;
-  min-height: clamp(480px, 56vh, 620px);
-  padding: clamp(16px, 2.5vw, 32px);
+  min-height: clamp(560px, 64vh, 700px);
+  padding: clamp(20px, 2.5vw, 36px);
   border-radius: var(--radius-xl);
   background:
     linear-gradient(160deg, rgba(255, 255, 255, 0.6) 0%, transparent 45%),

@@ -10,14 +10,14 @@ gsap.registerPlugin(ScrollTrigger)
 const DRAG_THRESHOLD = 8
 
 const scatterLayout = [
-  { x: 16, y: 22, rotate: -3.5, scale: 1.02, w: 230 },
-  { x: 42, y: 18, rotate: 3, scale: 0.96, w: 215 },
-  { x: 68, y: 22, rotate: -2, scale: 0.94, w: 205 },
-  { x: 86, y: 36, rotate: 2.5, scale: 0.92, w: 195 },
-  { x: 20, y: 68, rotate: 2, scale: 1, w: 225 },
-  { x: 44, y: 72, rotate: -2.5, scale: 0.98, w: 215 },
-  { x: 66, y: 68, rotate: 1.5, scale: 0.96, w: 210 },
-  { x: 84, y: 74, rotate: -3, scale: 0.95, w: 205 },
+  { x: 14, y: 26, rotate: -3.5, scale: 1.0, w: 220 },
+  { x: 38, y: 22, rotate: 2.5, scale: 0.98, w: 215 },
+  { x: 62, y: 25, rotate: -2, scale: 0.98, w: 215 },
+  { x: 86, y: 28, rotate: 3, scale: 0.96, w: 210 },
+  { x: 15, y: 72, rotate: 2, scale: 0.98, w: 220 },
+  { x: 39, y: 74, rotate: -2.5, scale: 1.0, w: 215 },
+  { x: 63, y: 70, rotate: 1.5, scale: 0.98, w: 215 },
+  { x: 85, y: 72, rotate: -2, scale: 0.96, w: 210 },
 ]
 
 function getScatter(index) {
@@ -56,22 +56,37 @@ export default function MovableMemories() {
     return () => mq.removeEventListener('change', update)
   }, [])
 
-  useEffect(() => {
-    if (!tableRef.current || photos.length === 0 || positionsRef.current.length > 0) return
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const computePositions = useCallback(() => {
+    if (!tableRef.current || photos.length === 0) return
     const rect = tableRef.current.getBoundingClientRect()
     positionsRef.current = photos.map((_, index) => {
       const layout = getScatter(index)
+      const cardW = layout.w
+      const cardH = cardW * 1.25 + 50
+      const minX = cardW / 2 + 16
+      const maxX = Math.max(minX, rect.width - cardW / 2 - 16)
+      const minY = cardH / 2 + 16
+      const maxY = Math.max(minY, rect.height - cardH / 2 - 16)
+
+      const rawX = (layout.x / 100) * rect.width
+      const rawY = (layout.y / 100) * rect.height
+
       return {
-        left: (layout.x / 100) * rect.width,
-        top: (layout.y / 100) * rect.height,
+        left: Math.max(minX, Math.min(maxX, rawX)),
+        top: Math.max(minY, Math.min(maxY, rawY)),
         rotate: layout.rotate,
         scale: layout.scale,
         width: layout.w,
         z: index + 1,
       }
     })
+  }, [photos])
+
+  useEffect(() => {
+    if (!tableRef.current || photos.length === 0) return
+
+    computePositions()
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ paused: true })
@@ -101,7 +116,7 @@ export default function MovableMemories() {
     }, tableRef)
 
     return () => ctx.revert()
-  }, [photos])
+  }, [photos, computePositions])
 
   const applyPosition = useCallback((cardEl, pos, dragLift = false) => {
     if (!cardEl || !pos) return
@@ -116,7 +131,14 @@ export default function MovableMemories() {
 
   useEffect(() => {
     cardsRef.current.forEach((card, index) => {
-      if (card && positionsRef.current[index]) {
+      if (!card) return
+      if (isMobile) {
+        card.style.left = ''
+        card.style.top = ''
+        card.style.width = ''
+        card.style.transform = ''
+        card.style.zIndex = ''
+      } else if (positionsRef.current[index]) {
         applyPosition(card, positionsRef.current[index])
       }
     })

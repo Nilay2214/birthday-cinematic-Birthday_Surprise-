@@ -81,8 +81,7 @@ export default function BirthdayVideo({ autoStart = false, video: customVideo, o
 
   useEffect(() => {
     if (!autoStart) return
-    const timer = setTimeout(() => startVideo(true), 120)
-    return () => clearTimeout(timer)
+    startVideo(true)
   }, [autoStart, startVideo])
 
   useEffect(() => {

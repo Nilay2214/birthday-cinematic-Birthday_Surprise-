@@ -113,7 +113,12 @@ export default function App() {
     window.location.search.includes('testCountdown=true')
 
   const birthdayUnlocked = isBirthdayUnlocked(birthdayData.birthDate)
-  const initialStage = (!testCountdownEnabled && (testModeEnabled || birthdayUnlocked))
+  const sessionRevealed =
+    typeof window !== 'undefined' && sessionStorage.getItem('birthday_revealed') === 'true'
+
+  const initialStage = (!testCountdownEnabled && sessionRevealed)
+    ? EXPERIENCE_STAGE.MEMORIES
+    : (!testCountdownEnabled && (testModeEnabled || birthdayUnlocked))
     ? EXPERIENCE_STAGE.AGE_REVEAL
     : EXPERIENCE_STAGE.COUNTDOWN
 
@@ -124,6 +129,15 @@ export default function App() {
   useEffect(() => {
     prefersReducedRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   }, [])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual'
+    }
+    if (locked) {
+      window.scrollTo(0, 0)
+    }
+  }, [locked])
 
   useEffect(() => {
     document.body.style.overflow = locked ? 'hidden' : ''
@@ -161,6 +175,11 @@ export default function App() {
   }, [])
 
   const handleVideoEnded = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        sessionStorage.setItem('birthday_revealed', 'true')
+      } catch (_) {}
+    }
     setStage((s) => (s === EXPERIENCE_STAGE.VIDEO ? EXPERIENCE_STAGE.MEMORIES : s))
     window.requestAnimationFrame(() => {
       setTimeout(() => {
@@ -188,9 +207,9 @@ export default function App() {
         {stage === EXPERIENCE_STAGE.AGE_REVEAL && (
           <AgeReveal onComplete={handleAgeRevealComplete} />
         )}
-        {stage === EXPERIENCE_STAGE.VIDEO && (
+        {(stage === EXPERIENCE_STAGE.AGE_REVEAL || stage === EXPERIENCE_STAGE.VIDEO) && (
           <BirthdayVideo
-            autoStart
+            autoStart={stage === EXPERIENCE_STAGE.VIDEO}
             video={birthdayData.videos?.main}
             onVideoEnded={handleVideoEnded}
           />
