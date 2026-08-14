@@ -45,13 +45,13 @@ export default function CountdownSection({ onComplete = () => {}, testModeEnable
     targetDate ? getTimeParts(targetDate) : null
   )
   const [completed, setCompleted] = useState(false)
-  const valueRefs = {
-    days: useRef(null),
-    hours: useRef(null),
-    minutes: useRef(null),
-    seconds: useRef(null),
-  }
-  const sectionRef = useRef(null)
+
+  const containerRef = useRef(null)
+  const eyebrowRef = useRef(null)
+  const titleRef = useRef(null)
+  const subtitleRef = useRef(null)
+  const gridRef = useRef(null)
+  const footerRef = useRef(null)
   const intervalRef = useRef(null)
 
   const onCompleteRef = useRef(onComplete)
@@ -60,6 +60,7 @@ export default function CountdownSection({ onComplete = () => {}, testModeEnable
   }, [onComplete])
   const completedHandledRef = useRef(false)
 
+  // Countdown timer interval - updates timeState smoothly without layout shifts
   useEffect(() => {
     if (!targetDate) return
 
@@ -83,10 +84,11 @@ export default function CountdownSection({ onComplete = () => {}, testModeEnable
     }, 1000)
 
     return () => {
-      window.clearInterval(intervalRef.current)
+      if (intervalRef.current) window.clearInterval(intervalRef.current)
     }
   }, [targetDate])
 
+  // Birthday unlock handler
   useEffect(() => {
     if (completed && !completedHandledRef.current) {
       completedHandledRef.current = true
@@ -95,60 +97,56 @@ export default function CountdownSection({ onComplete = () => {}, testModeEnable
           localStorage.setItem(`birthday_unlocked_${birthdayData.birthDate}`, 'true')
         }
       } catch (e) {}
+
+      if (typeof window !== 'undefined' && window.__markCountdownZero) {
+        window.__markCountdownZero()
+      }
+
       onCompleteRef.current?.()
     }
   }, [completed])
 
+  // Initial cinematic entrance animation - runs ONCE on load
   useEffect(() => {
-    if (!timeState || completed) return
-
-    Object.entries(timeState).forEach(([key, value]) => {
-      if (key === 'totalSeconds') return
-      const ref = valueRefs[key]?.current
-      if (!ref) return
-
-      gsap.fromTo(
-        ref,
-        { opacity: 0.24, y: 6, filter: 'blur(2px)', scale: 0.98 },
-        {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          scale: 1,
-          duration: 0.44,
-          ease: 'power3.out',
-          overwrite: true,
-        }
-      )
-    })
-  }, [timeState, completed])
-
-  useEffect(() => {
-    if (!sectionRef.current) return
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) return
 
-    const bg = gsap.fromTo(
-      sectionRef.current,
-      { scale: 1, opacity: 0.98 },
-      { scale: 1.003, opacity: 1, duration: 12, ease: 'slow(0.7, 0.7, false)', repeat: -1, yoyo: true }
-    )
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
-    return () => bg.kill()
+      tl.fromTo(
+        eyebrowRef.current,
+        { opacity: 0, y: 14, letterSpacing: '0.42em' },
+        { opacity: 0.85, y: 0, letterSpacing: '0.3em', duration: 1.2, delay: 0.2 }
+      )
+        .fromTo(
+          titleRef.current,
+          { opacity: 0, y: 22, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.4 },
+          '-=0.7'
+        )
+        .fromTo(
+          subtitleRef.current,
+          { opacity: 0, y: 16 },
+          { opacity: 0.82, y: 0, duration: 1.2 },
+          '-=0.8'
+        )
+        .fromTo(
+          gridRef.current,
+          { opacity: 0, y: 24, scale: 0.97, filter: 'blur(4px)' },
+          { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 1.4 },
+          '-=0.7'
+        )
+        .fromTo(
+          footerRef.current,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 1.2 },
+          '-=0.8'
+        )
+    }, containerRef)
+
+    return () => ctx.revert()
   }, [])
-
-  useEffect(() => {
-    if (!completed || !sectionRef.current) return
-    if (completedHandledRef.current) return
-    completedHandledRef.current = true
-
-    if (typeof window !== 'undefined' && window.__markCountdownZero) {
-      window.__markCountdownZero()
-    }
-
-    // Call onComplete immediately for zero-lag stage transition
-    onCompleteRef.current?.()
-  }, [completed])
 
   const displayValues = useMemo(() => {
     if (!timeState) return null
@@ -166,70 +164,96 @@ export default function CountdownSection({ onComplete = () => {}, testModeEnable
     onComplete?.()
   }
 
-  const renderCountdown = () => {
-    if (!timeState) {
-      return <div className="countdown-invalid">Birthday date is missing or invalid. Please update the birthday data.</div>
-    }
-
-    return (
-      <>
-        <div className="countdown-grid" aria-label="Birthday countdown timer">
-          {['days', 'hours', 'minutes', 'seconds'].map((unit) => (
-            <div key={unit} className="countdown-item">
-              <div
-                ref={valueRefs[unit]}
-                className="countdown-value"
-                aria-live="polite"
-                aria-label={`${unit} remaining`}
-              >
-                {displayValues[unit]}
-              </div>
-              <div className="countdown-label">{unit.toUpperCase()}</div>
-            </div>
-          ))}
-        </div>
-        <div className="countdown-note">
-          {completed
-            ? 'Birthday has arrived. Continue to the reveal for the next cinematic chapter.'
-            : 'The countdown is set to the next birthday date from the provided data.'}
-        </div>
-        {testModeEnabled && (
-          <div className="countdown-test-controls">
-            <button
-              type="button"
-              className="countdown-test-button"
-              onClick={handleUnlockForTesting}
-            >
-              TEST MODE — Unlock Experience
-            </button>
-          </div>
-        )}
-      </>
-    )
-  }
+  const units = [
+    { key: 'days', label: 'DAYS' },
+    { key: 'hours', label: 'HOURS' },
+    { key: 'minutes', label: 'MINUTES' },
+    { key: 'seconds', label: 'SECONDS' },
+  ]
 
   return (
-    <section className="countdown-section" ref={sectionRef} aria-labelledby="countdown-heading" aria-live="polite">
-      <p className="countdown-lock-note" role="status">
-        Birthday experience begins when the countdown reaches zero.
-      </p>
+    <section
+      className="countdown-section"
+      ref={containerRef}
+      aria-label="Birthday countdown"
+    >
       <div className="countdown-background" aria-hidden="true" />
       <div className="countdown-vignette" aria-hidden="true" />
       <div className="countdown-grain" aria-hidden="true" />
+      <div className="countdown-ambient-glow" aria-hidden="true" />
+
+      {/* Floating particles for romantic atmosphere */}
+      <div className="countdown-particles" aria-hidden="true">
+        <span className="particle particle--1" />
+        <span className="particle particle--2" />
+        <span className="particle particle--3" />
+        <span className="particle particle--4" />
+        <span className="particle particle--5" />
+      </div>
 
       <div className="countdown-inner">
-        {birthdayData.openingMessage && (
-          <p className="countdown-opening">{birthdayData.openingMessage}</p>
-        )}
-        <div className="countdown-heading" id="countdown-heading">
-          The next birthday begins in
+        {/* Eyebrow */}
+        <div className="countdown-eyebrow" ref={eyebrowRef}>
+          MADE JUST FOR YOU
         </div>
-        <div className="countdown-copy">
-          {birthdayData.sectionMessages?.countdown ||
-            'A quietly cinematic moment to mark the day. Numbers update in real time and the sequence transitions smoothly when it reaches zero.'}
+
+        {/* Title */}
+        <h1 className="countdown-title" ref={titleRef}>
+          {birthdayData.name ? `${birthdayData.name},` : 'Sakshi,'}
+        </h1>
+
+        {/* Subtitle */}
+        <p className="countdown-subtitle" ref={subtitleRef}>
+          The wait is almost over.
+        </p>
+
+        {/* Countdown Numbers Grid */}
+        <div
+          className="countdown-grid"
+          ref={gridRef}
+          role="timer"
+          aria-label="Time remaining until birthday"
+        >
+          {displayValues ? (
+            units.map(({ key, label }) => (
+              <div key={key} className="countdown-card">
+                <div className="countdown-value-wrap">
+                  <span className="countdown-value">
+                    {displayValues[key]}
+                  </span>
+                </div>
+                <span className="countdown-label">{label}</span>
+              </div>
+            ))
+          ) : (
+            <div className="countdown-loading">Preparing your moment...</div>
+          )}
         </div>
-        {renderCountdown()}
+
+        {/* Bottom Message */}
+        <div className="countdown-footer" ref={footerRef}>
+          <p className="countdown-footer-main">
+            There's something I made just for you.
+          </p>
+          <p className="countdown-footer-sub">
+            Just a little longer. ❤️
+          </p>
+
+          {/* Dev Mode Test Trigger */}
+          {testModeEnabled && (
+            <div className="countdown-dev-trigger">
+              <button
+                type="button"
+                className="countdown-test-btn"
+                onClick={handleUnlockForTesting}
+              >
+                Unlock Preview
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   )
 }
+
