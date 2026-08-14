@@ -67,64 +67,30 @@ export default function MovableMemories() {
   const computePositions = useCallback(() => {
     if (!tableRef.current || photos.length === 0) return
     const rect = tableRef.current.getBoundingClientRect()
+    if (rect.width === 0 || rect.height === 0) return
+
     positionsRef.current = photos.map((_, index) => {
       const layout = getScatter(index)
       const cardW = layout.w
       const cardH = cardW * 1.25 + 50
-      const minX = cardW / 2 + 16
-      const maxX = Math.max(minX, rect.width - cardW / 2 - 16)
-      const minY = cardH / 2 + 16
-      const maxY = Math.max(minY, rect.height - cardH / 2 - 16)
 
       const rawX = (layout.x / 100) * rect.width
       const rawY = (layout.y / 100) * rect.height
 
+      const left = Math.max(16, Math.min(rect.width - cardW - 16, rawX - cardW / 2))
+      const top = Math.max(16, Math.min(rect.height - cardH - 16, rawY - cardH / 2))
+
       return {
-        left: Math.max(minX, Math.min(maxX, rawX)),
-        top: Math.max(minY, Math.min(maxY, rawY)),
+        left,
+        top,
         rotate: layout.rotate,
         scale: layout.scale,
-        width: layout.w,
+        width: cardW,
+        height: cardH,
         z: index + 1,
       }
     })
   }, [photos])
-
-  useEffect(() => {
-    if (!tableRef.current || photos.length === 0) return
-
-    computePositions()
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ paused: true })
-      cardsRef.current.forEach((card, index) => {
-        if (!card) return
-        const layout = getScatter(index)
-        tl.from(
-          card,
-          {
-            y: 36,
-            rotation: layout.rotate + 8,
-            scale: layout.scale * 0.86,
-            autoAlpha: 1,
-            duration: prefersReduced ? 0.4 : 0.85,
-            ease: 'power3.out',
-          },
-          index * 0.08
-        )
-      })
-
-      ScrollTrigger.create({
-        trigger: tableRef.current,
-        start: 'top 82%',
-        animation: tl,
-        once: !prefersReduced,
-      })
-    }, tableRef)
-
-    return () => ctx.revert()
-  }, [photos, computePositions])
 
   const applyPosition = useCallback((cardEl, pos, dragLift = false) => {
     if (!cardEl || !pos) return
@@ -134,23 +100,90 @@ export default function MovableMemories() {
     cardEl.style.top = `${pos.top}px`
     cardEl.style.width = `${pos.width}px`
     cardEl.style.zIndex = pos.z
-    cardEl.style.transform = `translate(-50%, -50%) rotate(${dragRotate}deg) scale(${liftScale})`
+    cardEl.style.transform = `rotate(${dragRotate}deg) scale(${liftScale})`
   }, [])
 
+  // Position calculation and ResizeObserver
   useEffect(() => {
-    cardsRef.current.forEach((card, index) => {
-      if (!card) return
+    if (!tableRef.current || photos.length === 0) return
+
+    const updateAll = () => {
       if (isMobile) {
-        card.style.left = ''
-        card.style.top = ''
-        card.style.width = ''
-        card.style.transform = ''
-        card.style.zIndex = ''
-      } else if (positionsRef.current[index]) {
-        applyPosition(card, positionsRef.current[index])
+        cardsRef.current.forEach((card) => {
+          if (!card) return
+          card.style.left = ''
+          card.style.top = ''
+          card.style.width = ''
+          card.style.transform = ''
+          card.style.zIndex = ''
+        })
+      } else {
+        computePositions()
+        cardsRef.current.forEach((card, index) => {
+          if (card && positionsRef.current[index]) {
+            applyPosition(card, positionsRef.current[index])
+          }
+        })
       }
+    }
+
+    updateAll()
+
+    const ro = new ResizeObserver(() => {
+      requestAnimationFrame(updateAll)
     })
-  }, [photos, applyPosition, isMobile])
+    ro.observe(tableRef.current)
+
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(updateAll)
+    }
+
+    return () => ro.disconnect()
+  }, [photos, computePositions, applyPosition, isMobile])
+
+  // GSAP ScrollTrigger intro animation
+  useEffect(() => {
+    if (!tableRef.current || photos.length === 0 || isMobile) return
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReduced) return
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ paused: true })
+      cardsRef.current.forEach((card, index) => {
+        if (!card) return
+        const layout = getScatter(index)
+        tl.fromTo(
+          card,
+          {
+            y: 30,
+            rotation: layout.rotate + 6,
+            scale: layout.scale * 0.88,
+            autoAlpha: 0,
+          },
+          {
+            y: 0,
+            rotation: layout.rotate,
+            scale: layout.scale,
+            autoAlpha: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            clearProps: 'y,opacity,visibility',
+          },
+          index * 0.08
+        )
+      })
+
+      ScrollTrigger.create({
+        trigger: tableRef.current,
+        start: 'top 82%',
+        animation: tl,
+        once: true,
+      })
+    }, tableRef)
+
+    return () => ctx.revert()
+  }, [photos, isMobile])
 
   useEffect(() => {
     const table = tableRef.current
@@ -202,12 +235,11 @@ export default function MovableMemories() {
       const cardEl = cardsRef.current[drag.index]
       const pos = positionsRef.current[drag.index]
       const rect = table.getBoundingClientRect()
-      const cardRect = cardEl?.getBoundingClientRect()
-      const halfW = (cardRect?.width || pos.width) / 2
-      const halfH = (cardRect?.height || pos.width * 1.25) / 2
+      const cardW = pos.width || 220
+      const cardH = pos.height || (cardW * 1.25 + 50)
 
-      pos.left = Math.max(halfW, Math.min(rect.width - halfW, drag.origX + dx))
-      pos.top = Math.max(halfH, Math.min(rect.height - halfH, drag.origY + dy))
+      pos.left = Math.max(16, Math.min(rect.width - cardW - 16, drag.origX + dx))
+      pos.top = Math.max(16, Math.min(rect.height - cardH - 16, drag.origY + dy))
 
       if (cardEl) {
         applyPosition(cardEl, pos, true)
