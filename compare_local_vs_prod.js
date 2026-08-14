@@ -14,7 +14,7 @@ const VIEWPORTS = [
 ];
 
 async function compareLocalVsProd() {
-  console.log('=== COMPARING RUNTIME GEOMETRY: LOCALHOST vs VERCEL PRODUCTION ===');
+  console.log('=== COMPARING RUNTIME GEOMETRY: LOCALHOST vs VERCEL PRODUCTION (NO CACHE) ===');
 
   const server = spawn('npx', ['vite', 'preview', '--port', '4173', '--strictPort'], {
     shell: true,
@@ -45,23 +45,17 @@ async function compareLocalVsProd() {
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
-    const localPage = await browser.newPage();
-    const prodPage = await browser.newPage();
-
-    async function inspectMovable(page, url, vp) {
+    async function inspectMovable(url, vp) {
+      const page = await browser.newPage();
+      await page.setCacheEnabled(false);
       await page.setViewport({ width: vp.width, height: vp.height });
-      await page.goto(`${url}/?testMode=true&testCountdown=false`, { waitUntil: 'networkidle2' });
+      const cacheBust = `${url}/?testMode=true&testCountdown=false&_ts=${Date.now()}`;
+      await page.goto(cacheBust, { waitUntil: 'networkidle2' });
 
-      // Wait for either stage or skip to MEMORIES
-      await page.evaluate(() => {
+      // Poll and progress through stages
+      await page.waitForFunction(() => {
         const video = document.querySelector('video');
         if (video) video.dispatchEvent(new Event('ended'));
-      });
-
-      // Poll until .movable-memories is in DOM
-      await page.waitForFunction(() => {
-        const v = document.querySelector('video');
-        if (v) v.dispatchEvent(new Event('ended'));
         return !!document.querySelector('.movable-memories-card');
       }, { timeout: 30000 });
 
@@ -73,9 +67,10 @@ async function compareLocalVsProd() {
 
       await new Promise(r => setTimeout(r, 1200));
 
-      return await page.evaluate(() => {
+      const data = await page.evaluate(() => {
         const table = document.querySelector('.movable-memories-table');
         const cards = Array.from(document.querySelectorAll('.movable-memories-card'));
+        const scriptTags = Array.from(document.querySelectorAll('script[src]')).map(s => s.src);
         const tableRect = table ? table.getBoundingClientRect() : { width: 0, height: 0, left: 0, top: 0 };
         const tableComputed = table ? {
           position: getComputedStyle(table).position,
@@ -107,6 +102,7 @@ async function compareLocalVsProd() {
         });
 
         return {
+          scriptTags,
           tableRect: {
             left: Math.round(tableRect.left),
             top: Math.round(tableRect.top),
@@ -117,6 +113,9 @@ async function compareLocalVsProd() {
           cardMetrics,
         };
       });
+
+      await page.close();
+      return data;
     }
 
     for (const vp of VIEWPORTS) {
@@ -124,14 +123,15 @@ async function compareLocalVsProd() {
       console.log(`TESTING VIEWPORT: ${vp.name} (${vp.width}x${vp.height})`);
       console.log(`======================================================`);
 
-      const localData = await inspectMovable(localPage, localUrl, vp);
-      const prodData = await inspectMovable(prodPage, PROD_URL, vp);
+      const localData = await inspectMovable(localUrl, vp);
+      const prodData = await inspectMovable(PROD_URL, vp);
+
+      console.log('LOCAL script:', localData.scriptTags[0]);
+      console.log('PROD  script:', prodData.scriptTags[0]);
 
       console.log('--- Table Comparison ---');
       console.log('LOCAL Table Rect:', localData.tableRect);
       console.log('PROD  Table Rect:', prodData.tableRect);
-      console.log('LOCAL Table Computed:', localData.tableComputed);
-      console.log('PROD  Table Computed:', prodData.tableComputed);
 
       console.log('\n--- Card Geometry Comparison (LOCAL vs PROD) ---');
       const compTable = localData.cardMetrics.map((lCard, i) => {

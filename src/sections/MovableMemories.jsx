@@ -62,19 +62,21 @@ export default function MovableMemories() {
 
   const computePositions = useCallback(() => {
     if (!tableRef.current || photos.length === 0) return
-    const rect = tableRef.current.getBoundingClientRect()
-    if (rect.width === 0 || rect.height === 0) return
+    const tableEl = tableRef.current
+    const rect = tableEl.getBoundingClientRect()
+    const tableWidth = rect.width || tableEl.offsetWidth || tableEl.clientWidth || (typeof window !== 'undefined' ? Math.min(1240, window.innerWidth - 48) : 1200)
+    const tableHeight = rect.height || tableEl.offsetHeight || tableEl.clientHeight || 700
 
     positionsRef.current = photos.map((_, index) => {
       const layout = getScatter(index)
       const cardW = layout.w
       const cardH = cardW * 1.25 + 50
 
-      const rawX = (layout.x / 100) * rect.width
-      const rawY = (layout.y / 100) * rect.height
+      const rawX = (layout.x / 100) * tableWidth
+      const rawY = (layout.y / 100) * tableHeight
 
-      const left = Math.max(16, Math.min(rect.width - cardW - 16, rawX - cardW / 2))
-      const top = Math.max(16, Math.min(rect.height - cardH - 16, rawY - cardH / 2))
+      const left = Math.max(16, Math.min(tableWidth - cardW - 16, rawX - cardW / 2))
+      const top = Math.max(16, Math.min(tableHeight - cardH - 16, rawY - cardH / 2))
 
       return {
         left,
@@ -99,7 +101,7 @@ export default function MovableMemories() {
     cardEl.style.transform = `rotate(${dragRotate}deg) scale(${liftScale})`
   }, [])
 
-  // Position calculation, ResizeObserver, and resize listener
+  // Position calculation, ResizeObserver, IntersectionObserver, and resize listener
   useEffect(() => {
     if (!tableRef.current || photos.length === 0) return
 
@@ -127,11 +129,21 @@ export default function MovableMemories() {
     }
 
     updateAll()
+    const frameId = requestAnimationFrame(updateAll)
+    const timerId = setTimeout(updateAll, 60)
 
     const ro = new ResizeObserver(() => {
       requestAnimationFrame(updateAll)
     })
     ro.observe(tableRef.current)
+
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        updateAll()
+      }
+    }, { threshold: [0, 0.25, 0.5, 0.75, 1] })
+    io.observe(tableRef.current)
+
     window.addEventListener('resize', updateAll)
 
     if (document.fonts?.ready) {
@@ -139,7 +151,10 @@ export default function MovableMemories() {
     }
 
     return () => {
+      cancelAnimationFrame(frameId)
+      clearTimeout(timerId)
       ro.disconnect()
+      io.disconnect()
       window.removeEventListener('resize', updateAll)
     }
   }, [photos, computePositions, applyPosition, checkMobile])
