@@ -1,13 +1,16 @@
-/* Photo Journey — Premium Editorial Film Story */
+/* ==========================================================================
+   SECTION 4: PHOTO JOURNEY — EDITORIAL FILM STORY
+   ========================================================================== */
+
 .photo-journey {
   position: relative;
   min-height: 100vh;
   background:
-    radial-gradient(ellipse at 15% 10%, rgba(243, 198, 204, 0.28), transparent 45%),
-    radial-gradient(ellipse at 85% 90%, rgba(217, 185, 140, 0.12), transparent 42%),
-    linear-gradient(168deg, #FAF4EE 0%, #F5EBE0 50%, #EDE0D4 100%);
+    radial-gradient(ellipse at 15% 10%, rgba(245, 206, 213, 0.28), transparent 45%),
+    radial-gradient(ellipse at 85% 90%, rgba(222, 194, 155, 0.14), transparent 42%),
+    linear-gradient(168deg, var(--color-ivory) 0%, var(--color-cream) 45%, var(--color-paper) 100%);
   overflow: hidden;
-  padding: clamp(56px, 8vh, 96px) clamp(16px, 4vw, 48px) clamp(80px, 10vh, 120px);
+  padding: clamp(64px, 10vh, 110px) clamp(16px, 4vw, 48px) clamp(80px, 12vh, 130px);
 }
 
 .photo-journey-bg {
@@ -19,44 +22,46 @@
 .photo-journey-glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 60% 30%, rgba(232, 160, 184, 0.12), transparent 50%);
+  background: radial-gradient(circle at 60% 30%, rgba(232, 170, 180, 0.1), transparent 50%);
 }
 
 .photo-journey-grain {
   position: absolute;
   inset: 0;
   opacity: 0.025;
-  background-image: radial-gradient(#000 1px, transparent 1px);
-  background-size: 20px 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
 }
 
 .photo-journey-inner {
   position: relative;
   z-index: 2;
-  width: min(1280px, 100%);
+  width: min(var(--content-max), 100%);
   margin: 0 auto;
 }
 
 .photo-journey-header {
   position: relative;
   z-index: 10;
-  max-width: 620px;
-  margin-bottom: clamp(48px, 7vh, 84px);
+  max-width: 680px;
+  margin-bottom: clamp(52px, 8vh, 90px);
 }
 
 .photo-journey-tagline {
-  margin-top: 14px;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(17px, 1.8vw, 21px);
-  line-height: 1.75;
-  color: #6E5244;
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(18px, 2vw, 23px);
+  line-height: 1.6;
+  color: var(--color-burgundy);
+  opacity: 0.9;
 }
 
 /* Multi-Act Story Layout */
 .photo-journey-story {
   display: flex;
   flex-direction: column;
-  gap: clamp(64px, 10vh, 120px);
+  gap: clamp(72px, 12vh, 130px);
 }
 
 .photo-journey-act {
@@ -64,85 +69,84 @@
   width: 100%;
 }
 
-/* Act 1: Hero Composition */
+/* Act 1: Hero Composition (Asymmetric Opening Duo) */
 .photo-journey-act--1 {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
-  gap: clamp(24px, 4vw, 56px);
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);
+  gap: clamp(28px, 4.5vw, 64px);
   align-items: center;
 }
 
 .photo-journey-item--act1-1 {
   position: relative;
   z-index: 3;
-  transform: rotate(-2deg);
+  transform: rotate(-1.5deg);
 }
 
 .photo-journey-item--act1-2 {
   position: relative;
   z-index: 2;
-  transform: rotate(2.2deg) translateY(-20px);
-  margin-left: -8%;
+  transform: rotate(2deg) translateY(-24px);
+  margin-left: -6%;
 }
 
 .photo-journey-item--act1-3 {
   grid-column: 2;
   position: relative;
   z-index: 1;
-  transform: rotate(-1.5deg) translateY(10px);
-  margin-top: -10%;
+  transform: rotate(-1.2deg) translateY(12px);
+  margin-top: -12%;
 }
 
 /* Act Chapters */
 .photo-journey-chapter {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: clamp(28px, 4vh, 44px);
+  gap: 20px;
+  margin-bottom: clamp(32px, 5vh, 48px);
 }
 
 .photo-journey-chapter span {
-  font-family: Inter, system-ui, sans-serif;
-  font-size: clamp(11px, 1vw, 13px);
+  font-family: var(--font-label);
+  font-size: clamp(11px, 1vw, 12.5px);
   font-weight: 600;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: #B86B79;
+  color: var(--color-soft-mauve);
 }
 
 .photo-journey-chapter::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, rgba(184, 107, 121, 0.28) 0%, transparent 100%);
+  background: linear-gradient(90deg, rgba(184, 107, 122, 0.3) 0%, transparent 100%);
 }
 
 /* Act 2 & 3 Grid Compositions */
 .photo-journey-act-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(20px, 3.5vw, 44px);
+  gap: clamp(24px, 4vw, 48px);
   align-items: start;
 }
 
 .photo-journey-act-grid--two {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  max-width: 920px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
-.photo-journey-item--act2-1 { transform: rotate(1.8deg); }
-.photo-journey-item--act2-2 { transform: rotate(-2deg) translateY(-14px); }
-.photo-journey-item--act2-3 { transform: rotate(1.2deg) translateY(12px); }
+.photo-journey-item--act2-1 { transform: rotate(1.5deg); }
+.photo-journey-item--act2-2 { transform: rotate(-1.8deg) translateY(-16px); }
+.photo-journey-item--act2-3 { transform: rotate(1.2deg) translateY(14px); }
 
-.photo-journey-item--act3-1 { transform: rotate(-1.8deg); }
-.photo-journey-item--act3-2 { transform: rotate(2deg) translateY(8px); }
+.photo-journey-item--act3-1 { transform: rotate(-1.5deg); }
+.photo-journey-item--act3-2 { transform: rotate(1.8deg) translateY(10px); }
 
 /* Editorial Card Styling */
 .photo-journey-item {
   position: relative;
-  filter: none !important;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform var(--transition-cinematic);
 }
 
 .photo-journey-item:hover {
@@ -151,44 +155,49 @@
 }
 
 .photo-journey-item .photo-card {
-  background: #FFFDF9;
-  border: 1px solid rgba(212, 175, 150, 0.28);
+  background: #FFF;
+  border: 1px solid rgba(107, 35, 53, 0.08);
   box-shadow:
-    0 20px 48px rgba(54, 28, 36, 0.07),
-    0 4px 14px rgba(0, 0, 0, 0.03);
-  border-radius: 4px;
-  padding: clamp(12px, 1.4vw, 18px);
-  filter: none !important;
+    0 24px 56px rgba(76, 23, 36, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-sm);
+  padding: clamp(12px, 1.5vw, 18px);
 }
 
 .photo-journey-item .photo-card-frame {
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
   overflow: hidden;
 }
 
 .photo-journey-item .photo-card-frame img {
-  border: 5px solid #FDFBF7;
+  border: 4px solid #FAF7F2;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  filter: none !important;
+  transition: transform var(--transition-cinematic);
+}
+
+.photo-journey-item:hover .photo-card-frame img {
+  transform: scale(1.03);
 }
 
 .photo-journey-item .photo-card-caption {
-  padding-top: 12px;
+  padding-top: 14px;
 }
 
 .photo-journey-item .photo-card-caption strong {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 13px;
-  color: #7A3B49;
-  letter-spacing: 0.04em;
+  font-family: var(--font-label);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-burgundy);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 .photo-journey-item .photo-card-caption span {
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 13px;
-  color: #5C4638;
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--text-secondary-light);
+  line-height: 1.5;
 }
 
 /* Tablet & Mobile Responsiveness */
@@ -240,7 +249,6 @@
     max-width: 360px !important;
     margin: 0 auto !important;
     grid-column: auto !important;
-    filter: none !important;
   }
 
   .photo-journey-item:nth-child(odd) {
@@ -255,9 +263,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .photo-journey-item {
-    transition: none !important;
-    transform: none !important;
-  }
-}

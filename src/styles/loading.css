@@ -1,71 +1,77 @@
-/* Cinematic loading screen styles */
-.loading-screen-root{
-  position:fixed;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background: radial-gradient(ellipse at center, rgba(18,12,17,0.96) 0%, rgba(18,12,17,0.99) 70%, #0c0508 100%);
-  z-index:10000;
-  overflow:hidden;
+/* ==========================================================================
+   CINEMATIC PRELOADER SCREEN
+   ========================================================================== */
+
+.loading-screen-root {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at center, rgba(43, 12, 22, 0.95) 0%, rgba(19, 5, 10, 0.99) 70%, #080204 100%);
+  z-index: 10000;
+  overflow: hidden;
 }
 
-.loading-vignette{
-  pointer-events:none;
-  position:absolute;
-  inset:0;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.45) 80%);
+.loading-vignette {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.6) 85%);
 }
 
-.loading-grain{
-  position:absolute;
-  inset:0;
+.loading-grain {
+  position: absolute;
+  inset: 0;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><filter id='f'><feTurbulence baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23f)' opacity='0.03'/></svg>");
-  opacity:0.03;
-  mix-blend-mode:overlay;
-  pointer-events:none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  pointer-events: none;
 }
 
-.loading-center{
-  position:relative;
-  text-align:center;
-  color: var(--ivory);
-  max-width:90%;
-  padding: 20px;
+.loading-center {
+  position: relative;
+  text-align: center;
+  color: var(--color-ivory);
+  max-width: 90%;
+  padding: 24px;
 }
 
-.loader-title{
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(18px, 2.5vw, 28px);
+.loader-title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--color-ivory);
+  text-shadow: 0 2px 20px rgba(222, 194, 155, 0.25);
+}
+
+.loader-sub {
+  margin-top: 12px;
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1.4vw, 15px);
+  font-weight: 300;
+  color: var(--text-secondary-dark);
   letter-spacing: 0.02em;
-  opacity:0.95;
 }
 
-.loader-sub{
-  margin-top:12px;
-  font-size: clamp(12px, 1.8vw, 16px);
-  color: #bfbfbf;
+.loader-indicator {
+  margin-top: 24px;
+  width: 72px;
+  height: 4px;
+  background: rgba(255, 249, 245, 0.08);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
 }
 
-.loader-indicator{
-  margin-top:18px;
-  width:60px;
-  height:6px;
-  background: rgba(255,255,255,0.06);
-  border-radius:3px;
-  overflow:hidden;
-  display:inline-block;
-  vertical-align:middle;
+.loader-indicator .bar {
+  height: 100%;
+  width: 35%;
+  background: linear-gradient(90deg, var(--color-dusty-rose), var(--color-champagne));
+  border-radius: var(--radius-full);
+  transform-origin: left center;
 }
 
-.loader-indicator .bar{
-  height:100%;
-  width:30%;
-  background: linear-gradient(90deg, rgba(232,160,184,0.28), rgba(246,214,223,0.6));
-  border-radius:3px;
-  transform-origin:left center;
-}
-
-@media (prefers-reduced-motion: reduce){
-  .loader-indicator .bar{transition:none !important; animation:none !important}
-}

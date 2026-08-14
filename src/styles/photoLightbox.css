@@ -1,21 +1,26 @@
-/* Photo Lightbox styles */
+/* ==========================================================================
+   PHOTO LIGHTBOX — FULLSCREEN CINEMATIC GALLERY
+   ========================================================================== */
+
 .photo-lightbox-overlay {
   position: fixed;
   inset: 0;
   z-index: 20000;
-  background: rgba(18, 12, 17, 0.92);
+  background: rgba(8, 2, 5, 0.94);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
   overflow: auto;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .photo-lightbox-overlay::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(232, 160, 184, 0.06), transparent 45%);
+  background: radial-gradient(circle at center, rgba(222, 194, 155, 0.06), transparent 50%);
   pointer-events: none;
 }
 
@@ -30,24 +35,27 @@
 
 .photo-lightbox-close {
   position: absolute;
-  top: 18px;
-  right: 18px;
-  border: none;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  top: 16px;
+  right: 16px;
+  border: 1px solid rgba(222, 194, 155, 0.25);
+  background: rgba(255, 249, 245, 0.06);
+  color: var(--color-champagne);
   width: 44px;
   height: 44px;
-  border-radius: 100px;
+  border-radius: 50%;
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  backdrop-filter: blur(8px);
+  transition: all var(--transition-fast);
+  z-index: 10;
 }
 
 .photo-lightbox-close:hover,
 .photo-lightbox-close:focus-visible {
-  background: rgba(232, 160, 184, 0.2);
-  transform: scale(1.04);
+  background: rgba(222, 194, 155, 0.2);
+  border-color: var(--color-champagne);
+  transform: scale(1.05);
   outline: none;
 }
 
@@ -59,22 +67,24 @@
 }
 
 .photo-lightbox-nav {
-  border: none;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  width: 52px;
-  height: 52px;
-  border-radius: 100px;
+  border: 1px solid rgba(222, 194, 155, 0.25);
+  background: rgba(255, 249, 245, 0.06);
+  color: var(--color-champagne);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  backdrop-filter: blur(8px);
+  transition: all var(--transition-fast);
 }
 
 .photo-lightbox-nav:hover,
 .photo-lightbox-nav:focus-visible {
-  background: rgba(232, 160, 184, 0.18);
-  transform: scale(1.04);
+  background: rgba(222, 194, 155, 0.2);
+  border-color: var(--color-champagne);
+  transform: scale(1.05);
   outline: none;
 }
 
@@ -82,12 +92,13 @@
   position: relative;
   width: 100%;
   min-height: 420px;
-  background: rgba(18, 12, 17, 0.6);
-  border: 1px solid rgba(232, 160, 184, 0.12);
-  border-radius: 8px;
+  background: rgba(14, 4, 9, 0.7);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
   display: grid;
   place-items: center;
   padding: 20px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
 }
 
 .photo-lightbox-frame img,
@@ -95,41 +106,43 @@
   width: 100%;
   max-height: 75vh;
   object-fit: contain;
+  border-radius: var(--radius-xs);
 }
 
 .photo-lightbox-fallback {
   display: grid;
   place-items: center;
-  color: rgba(248, 241, 234, 0.84);
-  font-family: Inter, system-ui, sans-serif;
+  color: rgba(248, 240, 232, 0.84);
+  font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.5;
 }
 
 .photo-lightbox-caption-wrap {
   display: grid;
-  gap: 10px;
-  color: rgba(248, 241, 234, 0.92);
+  gap: 8px;
+  text-align: center;
 }
 
 .photo-lightbox-label {
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 12px;
+  font-family: var(--font-label);
+  font-size: 11px;
+  font-weight: 600;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--romantic-pink);
+  color: var(--color-champagne);
 }
 
 .photo-lightbox-caption,
 .photo-lightbox-caption-muted {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: clamp(16px, 1.6vw, 20px);
-  line-height: 1.7;
-  color: rgba(248, 241, 234, 0.92);
+  line-height: 1.6;
+  color: var(--color-ivory);
 }
 
 .photo-lightbox-caption-muted {
-  color: rgba(248, 241, 234, 0.6);
+  color: rgba(248, 240, 232, 0.6);
   font-style: italic;
 }
 
@@ -139,28 +152,28 @@
   }
 
   .photo-lightbox-nav {
-    width: 46px;
-    height: 46px;
+    width: 44px;
+    height: 44px;
   }
 }
 
 @media (max-width: 620px) {
   .photo-lightbox-overlay {
-    padding: 18px;
+    padding: 16px;
   }
 
   .photo-lightbox-content {
-    gap: 18px;
+    gap: 16px;
   }
 
   .photo-lightbox-close {
-    top: 12px;
-    right: 12px;
+    top: 10px;
+    right: 10px;
   }
 
   .photo-lightbox-frame {
-    min-height: 320px;
-    padding: 16px;
+    min-height: 300px;
+    padding: 12px;
   }
 
   .photo-lightbox-caption,
@@ -169,11 +182,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .photo-lightbox-close,
-  .photo-lightbox-nav,
-  .photo-lightbox-content,
-  .photo-lightbox-frame {
-    transition: none !important;
-  }
-}

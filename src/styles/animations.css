@@ -1,1 +1,76 @@
-/* Placeholder for animation-specific styles */
+/* ==========================================================================
+   CINEMATIC ANIMATION & ATMOSPHERIC MOTION SYSTEM
+   ========================================================================== */
+
+@keyframes cinematicFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ambientAuraFloat {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05) translate(-12px, 8px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.7;
+  }
+}
+
+@keyframes subtleShimmer {
+  0% {
+    opacity: 0.35;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0.35;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes gentleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes emberBurn {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-80px) scale(0.3);
+    opacity: 0;
+  }
+}
+
+/* Reduced motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-aura,
+  .shimmer-element,
+  .floating-element {
+    animation: none !important;
+  }
+}

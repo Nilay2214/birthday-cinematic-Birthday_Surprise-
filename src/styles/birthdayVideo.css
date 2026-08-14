@@ -1,14 +1,18 @@
-/* Hero birthday video shown after the countdown completes */
+/* ==========================================================================
+   SECTION 3: MAIN BIRTHDAY HERO VIDEO
+   ========================================================================== */
+
 .birthday-video {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(40px, 8vh, 84px) clamp(16px, 4vw, 32px);
+  padding: clamp(48px, 8vh, 88px) clamp(16px, 4vw, 36px);
   background:
-    radial-gradient(circle at 50% 18%, rgba(232, 170, 180, 0.06), transparent 40%),
-    linear-gradient(180deg, var(--background-dark) 0%, var(--background-darker) 70%, var(--color-plum) 100%);
+    radial-gradient(ellipse at 50% 20%, rgba(222, 194, 155, 0.07), transparent 45%),
+    linear-gradient(180deg, var(--background-dark) 0%, var(--background-darker) 65%, var(--color-midnight) 100%);
   color: var(--text-primary-dark);
   overflow: hidden;
 }
@@ -17,7 +21,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at center, transparent 42%, rgba(0, 0, 0, 0.5) 100%);
+  background: radial-gradient(ellipse at center, transparent 42%, rgba(11, 2, 5, 0.65) 100%);
 }
 
 .birthday-video-inner {
@@ -27,37 +31,47 @@
   text-align: center;
 }
 
+.birthday-video-header {
+  margin-bottom: 24px;
+}
+
 .birthday-video-title {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(28px, 4.2vw, 46px);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4.5vw, 52px);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
   font-weight: 400;
-  color: var(--text-primary-dark);
+  color: var(--color-ivory);
   margin: 0;
+  text-shadow: 0 2px 24px rgba(222, 194, 155, 0.18);
 }
 
 .birthday-video-copy {
-  margin: 14px auto 0;
+  margin: 12px auto 0;
   max-width: 520px;
-  font-family: Inter, system-ui, sans-serif;
+  font-family: var(--font-body);
   color: var(--text-secondary-dark);
-  font-size: clamp(14px, 1.3vw, 16px);
+  font-size: clamp(14px, 1.3vw, 16.5px);
+  font-weight: 300;
   line-height: 1.7;
 }
 
 .birthday-video-frame {
   position: relative;
-  margin-top: 28px;
-  border-radius: 14px;
+  margin-top: 24px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   background: #000;
-  box-shadow: 0 36px 90px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(232, 170, 180, 0.1);
+  border: 1px solid var(--border-dark);
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 249, 245, 0.06),
+    0 0 40px rgba(222, 194, 155, 0.1);
 }
 
 .birthday-video-player {
   width: 100%;
-  max-height: 74vh;
+  max-height: 72vh;
   display: block;
   object-fit: contain;
   background: #000;
@@ -67,8 +81,8 @@
   display: grid;
   place-items: center;
   min-height: 44vh;
-  font-family: Inter, system-ui, sans-serif;
-  color: rgba(248, 241, 234, 0.85);
+  font-family: var(--font-body);
+  color: rgba(248, 240, 232, 0.85);
 }
 
 .birthday-video-sound {
@@ -80,49 +94,55 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 24px;
-  border: 1px solid rgba(232, 170, 180, 0.35);
-  border-radius: 999px;
-  background: rgba(18, 12, 17, 0.88);
-  color: var(--text-primary-dark);
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 15px;
-  font-weight: 500;
+  padding: 14px 26px;
+  border: 1px solid rgba(222, 194, 155, 0.4);
+  border-radius: var(--radius-full);
+  background: rgba(19, 5, 10, 0.88);
+  color: var(--color-champagne);
+  font-family: var(--font-label);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.6), 0 0 24px rgba(222, 194, 155, 0.2);
   animation: birthdayVideoPulse 2.4s ease-in-out infinite;
+  transition: all var(--transition-fast);
+}
+
+.birthday-video-sound:hover {
+  background: rgba(43, 12, 22, 0.95);
+  border-color: var(--color-champagne);
+  transform: translate(-50%, -50%) scale(1.04);
 }
 
 .birthday-video-sound:focus-visible {
-  outline: 2px solid var(--highlight-dark);
+  outline: 2px solid var(--color-champagne);
   outline-offset: 3px;
 }
 
 .birthday-video-hint {
   margin-top: 20px;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-style: italic;
-  color: rgba(248, 239, 232, 0.55);
-  font-size: clamp(13px, 1.2vw, 15px);
+  color: rgba(248, 240, 232, 0.62);
+  font-size: clamp(14px, 1.25vw, 16px);
 }
 
 @media (max-width: 620px) {
   .birthday-video-player {
-    max-height: 60vh;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .birthday-video-sound {
-    animation: none;
+    max-height: 58vh;
   }
 }
 
 @keyframes birthdayVideoPulse {
   0%, 100% {
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(232, 183, 200, 0.3);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 0 rgba(222, 194, 155, 0.35);
   }
   50% {
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 12px rgba(232, 183, 200, 0);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 12px rgba(222, 194, 155, 0);
   }
 }
+

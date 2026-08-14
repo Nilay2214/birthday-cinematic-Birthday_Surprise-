@@ -1,7 +1,10 @@
-/* Shared PhotoCard base styles */
+/* ==========================================================================
+   SHARED PHOTOCARD BASE STYLES
+   ========================================================================== */
+
 .photo-card {
   display: block;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
@@ -16,13 +19,14 @@
 }
 
 .photo-card-button:focus-visible {
-  outline: 2px solid var(--romantic-pink);
-  outline-offset: 3px;
-  border-radius: 4px;
+  outline: 2px solid var(--color-champagne);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .photo-card-frame {
   overflow: hidden;
+  border-radius: var(--radius-xs);
 }
 
 .photo-card-frame img,
@@ -31,33 +35,37 @@
   display: block;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  background: #efe6de;
+  background: var(--color-cream);
 }
 
 .photo-card-fallback {
   display: grid;
   place-items: center;
-  color: rgba(75, 59, 47, 0.7);
-  font-family: Inter, system-ui, sans-serif;
+  color: var(--text-secondary-light);
+  font-family: var(--font-body);
   font-size: 14px;
   padding: 14px;
 }
 
 .photo-card-caption {
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .photo-card-caption strong {
   display: block;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 14px;
+  font-family: var(--font-label);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-burgundy);
 }
 
 .photo-card-caption span {
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 13px;
-  color: rgba(61, 44, 32, 0.82);
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  color: var(--text-secondary-light);
   line-height: 1.5;
 }
 
@@ -65,9 +73,3 @@
   z-index: 10;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .photo-card,
-  .photo-card-button {
-    transition: none !important;
-  }
-}

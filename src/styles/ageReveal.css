@@ -1,21 +1,26 @@
+/* ==========================================================================
+   SECTION 2: AGE REVEAL (ICONIC 21 MOMENT)
+   ========================================================================== */
+
 .age-reveal-stage {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #120C11;
+  background: var(--color-deep-black);
 }
 
 .age-reveal-bg {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 45%, rgba(68, 24, 45, 0.6) 0%, rgba(26, 12, 22, 0.95) 60%, #0d080c 100%);
+    radial-gradient(ellipse at 50% 45%, rgba(107, 35, 53, 0.65) 0%, rgba(43, 12, 22, 0.95) 55%, var(--color-deep-black) 100%);
   pointer-events: none;
 }
 
@@ -24,11 +29,11 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(70vw, 700px);
-  height: min(70vw, 700px);
+  width: min(80vw, 780px);
+  height: min(80vw, 780px);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(232, 160, 184, 0.12) 0%, rgba(184, 75, 110, 0.04) 45%, transparent 70%);
-  filter: blur(40px);
+  background: radial-gradient(circle, rgba(232, 170, 180, 0.16) 0%, rgba(184, 107, 122, 0.06) 45%, transparent 70%);
+  filter: blur(50px);
   pointer-events: none;
 }
 
@@ -36,8 +41,8 @@
   position: absolute;
   inset: 0;
   opacity: 0.035;
-  background-image: radial-gradient(#fff 1px, transparent 1px);
-  background-size: 16px 16px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><filter id='g'><feTurbulence baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23g)' opacity='0.035'/></svg>");
+  mix-blend-mode: overlay;
   pointer-events: none;
 }
 
@@ -50,18 +55,19 @@
   justify-content: center;
   text-align: center;
   padding: 24px;
-  max-width: 90vw;
+  max-width: var(--content-narrow);
 }
 
 .age-reveal-eyebrow {
-  font-family: Inter, system-ui, -apple-system, sans-serif;
-  font-size: clamp(0.72rem, 1.2vw, 0.95rem);
-  font-weight: 500;
+  font-family: var(--font-label);
+  font-size: clamp(0.72rem, 1.2vw, 0.92rem);
+  font-weight: 600;
   letter-spacing: 0.38em;
   text-transform: uppercase;
-  color: var(--romantic-pink, #e8a0b8);
-  margin-bottom: 0.4rem;
-  opacity: 0.9;
+  color: var(--color-champagne);
+  margin-bottom: 0.6rem;
+  opacity: 0.92;
+  text-shadow: 0 0 16px rgba(222, 194, 155, 0.3);
 }
 
 .age-reveal-number-wrap {
@@ -71,28 +77,28 @@
 }
 
 .age-reveal-number {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(6.5rem, 24vw, 15rem);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: clamp(7.5rem, 28vw, 17rem);
+  font-weight: 400;
   line-height: 0.88;
-  letter-spacing: -0.04em;
-  color: #F8F1EA;
+  letter-spacing: -0.045em;
+  color: var(--color-ivory);
   text-shadow:
-    0 0 40px rgba(232, 160, 184, 0.2),
-    0 8px 32px rgba(0, 0, 0, 0.6);
+    0 0 50px rgba(222, 194, 155, 0.35),
+    0 12px 40px rgba(0, 0, 0, 0.8);
   transition: color 0.3s ease, text-shadow 0.3s ease, filter 0.3s ease;
   will-change: transform, opacity, filter;
   user-select: none;
 }
 
-/* Burning & Disintegration effect state */
+/* Burning & Disintegration Effect State */
 .age-reveal-number--burning {
-  color: #fff3e6;
+  color: #FFF2E0;
   text-shadow:
-    0 0 12px #ff8833,
-    0 0 28px #ff4400,
-    0 0 60px #cc1100,
-    0 0 90px rgba(255, 60, 0, 0.7);
+    0 0 16px #FF944D,
+    0 0 36px #FF5500,
+    0 0 70px #D92200,
+    0 0 110px rgba(255, 80, 0, 0.75);
 }
 
 .age-reveal-particles {
@@ -112,24 +118,24 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #ffa866;
-  box-shadow: 0 0 8px #ff4400, 0 0 14px #ff1100;
+  background: #FFB37A;
+  box-shadow: 0 0 10px #FF5500, 0 0 18px #FF2200;
   opacity: 0;
   pointer-events: none;
 }
 
-.age-particle--0 { width: 3px; height: 3px; background: #ffcc88; }
-.age-particle--1 { width: 6px; height: 6px; background: #ff7722; }
-.age-particle--2 { width: 4px; height: 4px; background: #ffaa44; }
-.age-particle--3 { width: 5px; height: 5px; background: #ff4411; }
+.age-particle--0 { width: 3px; height: 3px; background: #FFD499; }
+.age-particle--1 { width: 6px; height: 6px; background: #FF8833; }
+.age-particle--2 { width: 4px; height: 4px; background: #FFBB55; }
+.age-particle--3 { width: 5px; height: 5px; background: #FF5522; }
 
 .age-reveal-subtitle {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(1.1rem, 2vw, 1.6rem);
-  line-height: 1.4;
-  color: rgba(248, 241, 234, 0.85);
-  margin-top: 0.8rem;
+  font-size: clamp(1.2rem, 2.2vw, 1.75rem);
+  line-height: 1.45;
+  color: rgba(248, 240, 232, 0.88);
+  margin-top: 1rem;
   letter-spacing: -0.01em;
 }
 
@@ -148,21 +154,10 @@
 @media (max-width: 480px) {
   .age-reveal-eyebrow {
     letter-spacing: 0.28em;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
   }
   .age-reveal-subtitle {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .age-reveal-number,
-  .age-reveal-eyebrow,
-  .age-reveal-subtitle,
-  .age-reveal-stage {
-    transition: none !important;
-  }
-  .age-reveal-particles {
-    display: none;
-  }
-}

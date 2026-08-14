@@ -1,41 +1,48 @@
-/* Cinematic video memory sections */
+/* ==========================================================================
+   SECTION 6: SECOND VIDEO (QUIET MEMORY CHAPTER)
+   ========================================================================== */
+
 .video-memory {
   position: relative;
-  padding: clamp(64px, 10vh, 110px) clamp(20px, 4vw, 32px);
+  padding: clamp(72px, 10vh, 120px) clamp(20px, 4vw, 36px);
   overflow: hidden;
 }
 
 .video-memory--light {
   background:
-    radial-gradient(ellipse at 25% 15%, rgba(243, 198, 204, 0.18), transparent 48%),
-    radial-gradient(ellipse at 85% 85%, rgba(217, 185, 140, 0.08), transparent 40%),
-    linear-gradient(180deg, var(--background-light) 0%, var(--color-cream) 100%);
+    radial-gradient(ellipse at 25% 15%, rgba(245, 206, 213, 0.2), transparent 48%),
+    radial-gradient(ellipse at 85% 85%, rgba(222, 194, 155, 0.1), transparent 40%),
+    linear-gradient(180deg, var(--color-ivory) 0%, var(--color-cream) 100%);
 }
 
 .video-memory--dark {
   background:
-    radial-gradient(ellipse at 65% 25%, rgba(201, 130, 143, 0.1), transparent 45%),
-    radial-gradient(ellipse at 15% 80%, rgba(110, 38, 56, 0.1), transparent 38%),
-    linear-gradient(180deg, var(--background-dark) 0%, var(--background-darker) 100%);
+    radial-gradient(ellipse at 65% 25%, rgba(201, 130, 143, 0.12), transparent 45%),
+    radial-gradient(ellipse at 15% 80%, rgba(107, 35, 53, 0.14), transparent 40%),
+    linear-gradient(180deg, var(--color-cream) 0%, var(--background-dark) 40%, var(--background-darker) 100%);
   color: var(--text-primary-dark);
 }
 
 .video-memory-title {
-  font-size: clamp(28px, 4.5vw, 48px);
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4.8vw, 52px);
   margin-top: 8px;
   line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-weight: 400;
 }
 
 .video-memory-title--dark {
-  color: var(--accent-dark);
+  color: var(--color-ivory);
+  text-shadow: 0 2px 24px rgba(222, 194, 155, 0.18);
 }
 
 .video-memory-glow {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 50%, var(--accent-glow), transparent 55%);
-  opacity: 0.5;
+  background: radial-gradient(circle at 50% 50%, rgba(222, 194, 155, 0.08), transparent 55%);
+  opacity: 0.7;
 }
 
 .video-memory-inner {
@@ -50,7 +57,7 @@
 }
 
 .video-memory--dark .section-label {
-  color: var(--highlight-dark);
+  color: var(--color-champagne);
 }
 
 .video-memory-frame-wrap {
@@ -63,27 +70,32 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  background-color: var(--dark-romantic);
+  background-color: var(--color-plum);
   filter: brightness(0.72) saturate(0.9);
 }
 
 .video-memory-copy {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(16px, 1.5vw, 19px);
-  line-height: 1.75;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.65;
+  color: var(--color-burgundy);
+}
+
+.video-memory--dark .video-memory-copy {
+  color: rgba(248, 240, 232, 0.85);
 }
 
 .video-memory-frame {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: clamp(12px, 2vw, 20px);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--background-darker);
+  background: var(--color-midnight);
   box-shadow:
-    0 48px 100px rgba(84, 28, 43, 0.18),
-    0 0 0 1px rgba(201, 130, 143, 0.14),
-    inset 0 0 80px rgba(0, 0, 0, 0.35);
+    0 44px 100px rgba(0, 0, 0, 0.5),
+    0 0 0 1px var(--border-dark);
 }
 
 .video-memory-vignette {
@@ -91,14 +103,13 @@
   inset: 0;
   pointer-events: none;
   z-index: 2;
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(18, 10, 14, 0.45) 100%);
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(14, 4, 9, 0.5) 100%);
 }
 
 .video-memory--light .video-memory-frame {
   box-shadow:
-    0 40px 80px rgba(110, 38, 56, 0.14),
-    0 0 0 1px rgba(201, 130, 143, 0.12),
-    inset 0 0 60px rgba(84, 28, 43, 0.2);
+    0 40px 80px rgba(107, 35, 53, 0.12),
+    0 0 0 1px var(--border-light);
 }
 
 .video-memory-video {
@@ -113,27 +124,29 @@
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 72px;
-  height: 72px;
+  width: 76px;
+  height: 76px;
   z-index: 3;
   border: none;
   border-radius: 50%;
-  background: rgba(18, 12, 17, 0.65);
-  color: var(--text-primary-dark);
+  background: rgba(20, 6, 12, 0.72);
+  color: var(--color-champagne);
   display: grid;
   place-items: center;
   cursor: pointer;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(232, 170, 180, 0.25);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(222, 194, 155, 0.35);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4), 0 0 24px rgba(222, 194, 155, 0.2);
+  transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
 }
 
 .video-memory-play:hover,
 .video-memory-play:focus-visible {
-  transform: scale(1.06);
-  background: rgba(84, 28, 43, 0.75);
-  box-shadow: 0 12px 40px rgba(201, 130, 143, 0.2);
+  transform: scale(1.08);
+  background: rgba(107, 35, 53, 0.85);
+  border-color: var(--color-champagne);
+  box-shadow: 0 16px 44px rgba(222, 194, 155, 0.25);
   outline: none;
 }
 
@@ -152,7 +165,7 @@
   padding: 32px;
   text-align: center;
   background:
-    radial-gradient(circle at center, rgba(201, 130, 143, 0.08), transparent 60%),
+    radial-gradient(circle at center, rgba(222, 194, 155, 0.08), transparent 60%),
     linear-gradient(180deg, var(--background-dark) 0%, var(--background-darker) 100%);
 }
 
@@ -162,15 +175,15 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: rgba(232, 170, 180, 0.1);
-  border: 1px solid rgba(232, 170, 180, 0.18);
-  color: var(--highlight-dark);
+  background: rgba(222, 194, 155, 0.1);
+  border: 1px solid rgba(222, 194, 155, 0.25);
+  color: var(--color-champagne);
 }
 
 .video-memory-placeholder p {
   max-width: 420px;
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: clamp(16px, 1.6vw, 20px);
   line-height: 1.6;
   color: var(--text-secondary-dark);
@@ -178,31 +191,23 @@
 }
 
 .video-memory-caption {
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 12px;
+  font-family: var(--font-label);
+  font-size: 11px;
+  font-weight: 600;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--accent-light);
+  color: var(--color-dusty-rose);
   text-align: center;
 }
 
 .video-memory--dark .video-memory-caption {
-  color: rgba(232, 170, 180, 0.6);
+  color: rgba(222, 194, 155, 0.65);
 }
 
 @media (max-width: 520px) {
   .video-memory-play {
-    width: 60px;
-    height: 60px;
-  }
-
-  .video-memory-frame {
-    border-radius: 12px;
+    width: 62px;
+    height: 62px;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .video-memory-play {
-    transition: none;
-  }
-}

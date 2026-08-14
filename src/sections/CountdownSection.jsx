@@ -4,7 +4,7 @@ import birthdayData from '../data/birthdayData'
 import '../styles/countdown.css'
 
 function getNextBirthday(birthDateString) {
-  if (import.meta.env.DEV && typeof window !== 'undefined' && window.location.search.includes('testCountdown=true')) {
+  if (typeof window !== 'undefined' && window.location.search.includes('testCountdown=true')) {
     // 10-second test target for development verification
     return new Date(Date.now() + 10000)
   }
@@ -40,6 +40,13 @@ function getTimeParts(targetDate) {
 }
 
 export default function CountdownSection({ onComplete = () => {}, testModeEnabled = false }) {
+  const isDevTest =
+    testModeEnabled ||
+    (typeof window !== 'undefined' &&
+      (window.location.search.includes('testMode=true') ||
+       window.location.search.includes('testCountdown=true') ||
+       window.location.search.includes('skip=true')))
+
   const targetDate = useMemo(() => getNextBirthday(birthdayData.birthDate), [])
   const [timeState, setTimeState] = useState(() =>
     targetDate ? getTimeParts(targetDate) : null
@@ -240,7 +247,7 @@ export default function CountdownSection({ onComplete = () => {}, testModeEnable
           </p>
 
           {/* Dev Mode Test Trigger */}
-          {testModeEnabled && (
+          {isDevTest && (
             <div className="countdown-dev-trigger">
               <button
                 type="button"

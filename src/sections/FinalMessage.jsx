@@ -12,7 +12,7 @@ export default function FinalMessage() {
   const nameRef = useRef(null)
   const messageRefs = useRef([])
   const closingBlockRef = useRef(null)
-  const decorativeRef = useRef(null)
+  const signatureRef = useRef(null)
 
   const displayName = useMemo(() => birthdayData.name?.trim() || birthdayData.nickname?.trim() || '', [])
 
@@ -46,8 +46,8 @@ export default function FinalMessage() {
         eyebrowRef.current,
         nameRef.current,
         ...messageRefs.current,
+        signatureRef.current,
         closingBlockRef.current,
-        decorativeRef.current,
       ].filter(Boolean)
 
       if (prefersReduced) {
@@ -60,18 +60,18 @@ export default function FinalMessage() {
         .from(nameRef.current, { autoAlpha: 0, y: 20, duration: 0.65, ease: 'power3.out' }, '-=0.35')
         .from(
           messageRefs.current,
-          { autoAlpha: 0, y: 20, duration: 0.55, ease: 'power3.out', stagger: 0.14 },
+          { autoAlpha: 0, y: 18, duration: 0.55, ease: 'power3.out', stagger: 0.12 },
           '-=0.4'
         )
         .from(
-          closingBlockRef.current,
-          { autoAlpha: 0, y: 24, duration: 0.65, ease: 'power3.out' },
+          signatureRef.current,
+          { autoAlpha: 0, y: 20, duration: 0.65, ease: 'power3.out' },
           '-=0.3'
         )
         .from(
-          decorativeRef.current,
-          { autoAlpha: 0, scale: 0.94, duration: 0.5, ease: 'power3.out' },
-          '-=0.35'
+          closingBlockRef.current,
+          { autoAlpha: 0, y: 22, duration: 0.55, ease: 'power3.out' },
+          '-=0.3'
         )
     }, sectionRef)
 
@@ -79,77 +79,64 @@ export default function FinalMessage() {
   }, [])
 
   return (
-    <section className="final-message" ref={sectionRef} aria-label="Final birthday message">
+    <section className="final-message-section" ref={sectionRef} aria-label="Final birthday message">
+      <div className="final-message-glow" aria-hidden="true" />
       <div className="final-message-inner">
-        <div className="final-message-eyebrow" ref={eyebrowRef}>
-          Happy Birthday, Beautiful.
-        </div>
+        <div className="final-message-card">
+          <div className="final-message-eyebrow" ref={eyebrowRef}>
+            Happy Birthday, Beautiful.
+          </div>
 
-        {displayName && (
-          <h2 className="final-message-name" ref={nameRef}>
-            {displayName},
-          </h2>
-        )}
+          {displayName && (
+            <h2 className="final-message-heading" ref={nameRef}>
+              {displayName},
+            </h2>
+          )}
 
-        <div className="final-message-copy">
-          {messageLines.map((line, index) => (
-            <p
-              key={index}
-              ref={(element) => {
-                if (!element) return
-                messageRefs.current[index] = element
-              }}
-            >
-              {line}
-            </p>
-          ))}
-        </div>
-
-        {birthdayData.finalSignature && (
-          <div
-            style={{
-              marginTop: '32px',
-              fontFamily: "Georgia, 'Times New Roman', serif",
-              fontSize: 'clamp(1.2rem, 1.8vw, 1.5rem)',
-              fontStyle: 'italic',
-              color: '#F3C6CC',
-              lineHeight: 1.6,
-            }}
-          >
-            {birthdayData.finalSignature.split('\n').map((line, i) => (
-              <div key={i}>{line}</div>
+          <div className="final-message-body">
+            {messageLines.map((line, index) => (
+              <p
+                key={index}
+                className="final-message-paragraph"
+                ref={(element) => {
+                  if (!element) return
+                  messageRefs.current[index] = element
+                }}
+              >
+                {line}
+              </p>
             ))}
           </div>
-        )}
 
-        {(closing.status || closing.position || closing.duration) && (
-          <div className="final-message-application" ref={closingBlockRef}>
-            {closing.status && (
-              <div className="final-message-application-item">
-                {closing.status.split('\n').map((line, i) => (
-                  <span key={i}>{line}</span>
-                ))}
-              </div>
-            )}
-            {closing.position && (
-              <div className="final-message-application-item">
-                {closing.position.split('\n').map((line, i) => (
-                  <span key={i}>{line}</span>
-                ))}
-              </div>
-            )}
-            {closing.duration && (
-              <div className="final-message-application-item final-message-application-item--duration">
-                {closing.duration.split('\n').map((line, i) => (
-                  <span key={i}>{line}</span>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+          {birthdayData.finalSignature && (
+            <div className="final-message-signoff" ref={signatureRef}>
+              <div className="final-message-closing">With all my love,</div>
+              <div className="final-message-signature">Nilay ❤️</div>
+            </div>
+          )}
 
-        <div className="final-message-decorative" ref={decorativeRef} aria-hidden="true" />
+          {(closing.status || closing.position || closing.duration) && (
+            <div className="final-message-badges" ref={closingBlockRef}>
+              {closing.status && (
+                <div className="final-message-badge">
+                  <span>{closing.status.replace('\n', ' • ')}</span>
+                </div>
+              )}
+              {closing.position && (
+                <div className="final-message-badge">
+                  <span>{closing.position.replace('\n', ' • ')}</span>
+                </div>
+              )}
+              {closing.duration && (
+                <div className="final-message-badge">
+                  <span>{closing.duration.replace('\n', ' • ')}</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   )
 }
+

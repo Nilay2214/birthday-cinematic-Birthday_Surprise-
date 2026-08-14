@@ -100,13 +100,15 @@ export default function App() {
   const [loaded, setLoaded] = React.useState(false)
   
   const testModeEnabled =
-    import.meta.env.DEV &&
-    (import.meta.env.VITE_BIRTHDAY_TEST_MODE === 'true' ||
-     import.meta.env.VITE_SKIP_COUNTDOWN === 'true' ||
-     (typeof window !== 'undefined' && (window.location.search.includes('testMode=true') || window.location.search.includes('skip=true'))))
+    (import.meta.env.DEV &&
+      (import.meta.env.VITE_BIRTHDAY_TEST_MODE === 'true' ||
+       import.meta.env.VITE_SKIP_COUNTDOWN === 'true')) ||
+    (typeof window !== 'undefined' &&
+      (window.location.search.includes('testMode=true') ||
+       window.location.search.includes('skip=true') ||
+       window.location.search.includes('testCountdown=true')))
 
   const testCountdownEnabled =
-    import.meta.env.DEV &&
     typeof window !== 'undefined' &&
     window.location.search.includes('testCountdown=true')
 

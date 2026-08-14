@@ -1,12 +1,15 @@
-/* Movable Memories — photographs on a table */
+/* ==========================================================================
+   SECTION 5: MOVABLE MEMORIES — TACTILE MEMORY TABLE
+   ========================================================================== */
+
 .movable-memories {
   position: relative;
   min-height: 110vh;
-  padding: clamp(64px, 10vh, 110px) clamp(20px, 4vw, 40px) clamp(72px, 9vh, 100px);
+  padding: clamp(72px, 10vh, 120px) clamp(20px, 4vw, 44px) clamp(80px, 10vh, 110px);
   background:
-    radial-gradient(ellipse at 75% 12%, rgba(243, 198, 204, 0.16), transparent 42%),
-    radial-gradient(ellipse at 18% 88%, rgba(217, 185, 140, 0.08), transparent 38%),
-    linear-gradient(180deg, #EBE0D4 0%, var(--background-light) 55%, var(--color-cream) 100%);
+    radial-gradient(ellipse at 75% 12%, rgba(245, 206, 213, 0.22), transparent 45%),
+    radial-gradient(ellipse at 18% 88%, rgba(222, 194, 155, 0.12), transparent 40%),
+    linear-gradient(180deg, var(--color-paper) 0%, var(--color-ivory) 50%, var(--color-cream) 100%);
   overflow: hidden;
 }
 
@@ -14,43 +17,43 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 55%, rgba(232, 183, 200, 0.12), transparent 55%);
+  background: radial-gradient(circle at 50% 55%, rgba(232, 170, 180, 0.08), transparent 55%);
 }
 
 .movable-memories-inner {
   position: relative;
-  width: min(1320px, 100%);
+  width: min(var(--content-max), 100%);
   margin: 0 auto;
 }
 
 .movable-memories-intro {
-  max-width: 480px;
-  margin-bottom: clamp(28px, 4vw, 48px);
+  max-width: 580px;
+  margin-bottom: clamp(32px, 4.5vw, 52px);
 }
 
 .movable-memories-hint {
   margin: 18px 0 0;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(14px, 1.3vw, 16px);
+  font-family: var(--font-display);
+  font-size: clamp(15.5px, 1.4vw, 18px);
   line-height: 1.6;
-  color: var(--accent-light);
+  color: var(--color-dusty-rose);
   font-style: italic;
 }
 
 .movable-memories-table {
   position: relative;
   width: 100%;
-  min-height: clamp(680px, 88vh, 920px);
+  min-height: clamp(680px, 86vh, 920px);
   padding: clamp(24px, 3vw, 40px);
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.4) 0%, transparent 45%),
-    linear-gradient(180deg, rgba(248, 239, 232, 0.55) 0%, rgba(255, 248, 242, 0.35) 100%);
+    linear-gradient(160deg, rgba(255, 255, 255, 0.6) 0%, transparent 45%),
+    linear-gradient(180deg, rgba(248, 240, 232, 0.65) 0%, rgba(255, 249, 245, 0.4) 100%);
   box-shadow:
-    inset 0 0 100px rgba(201, 130, 143, 0.07),
-    inset 0 2px 0 rgba(255, 255, 255, 0.6),
-    0 28px 64px rgba(110, 38, 56, 0.08);
-  border: 1px solid rgba(201, 130, 143, 0.12);
+    inset 0 0 100px rgba(107, 35, 53, 0.04),
+    inset 0 2px 0 rgba(255, 255, 255, 0.9),
+    0 32px 80px rgba(76, 23, 36, 0.08);
+  border: 1px solid rgba(107, 35, 53, 0.08);
 }
 
 .movable-memories-card {
@@ -59,12 +62,12 @@
   will-change: transform, left, top;
   user-select: none;
   outline: none;
-  border-radius: 4px;
-  transition: box-shadow 0.3s ease;
+  border-radius: var(--radius-sm);
+  transition: box-shadow var(--transition-normal);
 }
 
 .movable-memories-card:focus-visible {
-  outline: 2px solid var(--dusty-rose);
+  outline: 2px solid var(--color-champagne);
   outline-offset: 4px;
 }
 
@@ -74,13 +77,13 @@
 }
 
 .movable-photo-frame {
-  background: #fff;
+  background: #FFF;
   padding: 14px;
-  border: 1px solid rgba(201, 130, 143, 0.1);
+  border: 1px solid rgba(107, 35, 53, 0.08);
   box-shadow:
-    0 32px 60px var(--paper-shadow),
-    0 8px 20px rgba(110, 38, 56, 0.07);
-  border-radius: 3px;
+    0 32px 64px rgba(76, 23, 36, 0.12),
+    0 8px 24px rgba(76, 23, 36, 0.06);
+  border-radius: var(--radius-xs);
   pointer-events: none;
 }
 
@@ -91,15 +94,15 @@
   aspect-ratio: 4 / 5;
   object-fit: cover;
   background: var(--color-cream);
-  border: 6px solid var(--background-light);
-  box-shadow: inset 0 0 0 1px rgba(110, 38, 56, 0.05);
+  border: 4px solid #FAF6F0;
+  box-shadow: inset 0 0 0 1px rgba(107, 35, 53, 0.04);
   border-radius: 2px;
 }
 
 .movable-photo-fallback {
   display: grid;
   place-items: center;
-  font-family: Inter, system-ui, sans-serif;
+  font-family: var(--font-body);
   font-size: 13px;
   color: var(--text-secondary-light);
 }
@@ -108,23 +111,24 @@
   margin-top: 10px;
   padding: 0 4px;
   display: grid;
-  gap: 4px;
+  gap: 3px;
   pointer-events: none;
 }
 
 .movable-photo-caption strong {
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 10px;
-  color: var(--text-primary-light);
-  letter-spacing: 0.08em;
+  font-family: var(--font-label);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--color-burgundy);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .movable-photo-caption span {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 12px;
+  font-family: var(--font-display);
+  font-size: 14px;
   color: var(--text-secondary-light);
-  line-height: 1.45;
+  line-height: 1.4;
   font-style: italic;
 }
 
@@ -140,7 +144,7 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
-    padding: 32px 20px;
+    padding: 32px 18px;
   }
 
   .movable-memories-card {
@@ -158,8 +162,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .movable-memories-card {
-    transition: none !important;
-  }
-}
