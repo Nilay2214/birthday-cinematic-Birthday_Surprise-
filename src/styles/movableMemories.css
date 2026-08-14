@@ -58,6 +58,7 @@
 
 .movable-memories-card {
   position: absolute;
+  max-width: 260px;
   transform-origin: center center;
   will-change: transform, left, top;
   user-select: none;

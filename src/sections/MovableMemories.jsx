@@ -56,12 +56,8 @@ export default function MovableMemories() {
   const [isMobile, setIsMobile] = useState(false)
   const [failedImages, setFailedImages] = useState({})
 
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 760px)')
-    const update = () => setIsMobile(mq.matches)
-    update()
-    mq.addEventListener('change', update)
-    return () => mq.removeEventListener('change', update)
+  const checkMobile = useCallback(() => {
+    return typeof window !== 'undefined' && (window.innerWidth <= 760 || window.matchMedia('(max-width: 760px)').matches)
   }, [])
 
   const computePositions = useCallback(() => {
@@ -95,7 +91,7 @@ export default function MovableMemories() {
   const applyPosition = useCallback((cardEl, pos, dragLift = false) => {
     if (!cardEl || !pos) return
     const liftScale = dragLift ? pos.scale * 1.06 : pos.scale
-    const dragRotate = dragLift ? pos.rotate + 1.5 : pos.rotate
+    const dragRotate = dragLift ? pos.rotate + 1.2 : pos.rotate
     cardEl.style.left = `${pos.left}px`
     cardEl.style.top = `${pos.top}px`
     cardEl.style.width = `${pos.width}px`
@@ -103,12 +99,15 @@ export default function MovableMemories() {
     cardEl.style.transform = `rotate(${dragRotate}deg) scale(${liftScale})`
   }, [])
 
-  // Position calculation and ResizeObserver
+  // Position calculation, ResizeObserver, and resize listener
   useEffect(() => {
     if (!tableRef.current || photos.length === 0) return
 
     const updateAll = () => {
-      if (isMobile) {
+      const isMob = checkMobile()
+      setIsMobile(isMob)
+
+      if (isMob) {
         cardsRef.current.forEach((card) => {
           if (!card) return
           card.style.left = ''
@@ -133,13 +132,17 @@ export default function MovableMemories() {
       requestAnimationFrame(updateAll)
     })
     ro.observe(tableRef.current)
+    window.addEventListener('resize', updateAll)
 
     if (document.fonts?.ready) {
       document.fonts.ready.then(updateAll)
     }
 
-    return () => ro.disconnect()
-  }, [photos, computePositions, applyPosition, isMobile])
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', updateAll)
+    }
+  }, [photos, computePositions, applyPosition, checkMobile])
 
   // GSAP ScrollTrigger intro animation
   useEffect(() => {
