@@ -57,7 +57,7 @@ export default function MovableMemories() {
   const [failedImages, setFailedImages] = useState({})
 
   const checkMobile = useCallback(() => {
-    return typeof window !== 'undefined' && (window.innerWidth <= 760 || window.matchMedia('(max-width: 760px)').matches)
+    return typeof window !== 'undefined' && (window.innerWidth <= 768 || window.matchMedia('(max-width: 768px)').matches)
   }, [])
 
   const computePositions = useCallback(() => {

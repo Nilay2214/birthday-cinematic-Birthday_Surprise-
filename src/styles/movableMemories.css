@@ -140,13 +140,13 @@
   font-style: italic;
 }
 
-@media (min-width: 761px) {
+@media (min-width: 769px) {
   .movable-memories-table {
     touch-action: none;
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .movable-memories {
     padding: 36px 14px 48px;
   }
