@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SECTION 5: MOVABLE MEMORIES — TACTILE MEMORY TABLE
+   SECTION 5: MOVABLE MEMORIES — EDITORIAL SCRAPBOOK GRID
    ========================================================================== */
 
 .movable-memories {
@@ -23,6 +23,7 @@
 .movable-memories-inner {
   position: relative;
   width: min(var(--content-max), 100%);
+  max-width: 1240px;
   margin: 0 auto;
 }
 
@@ -40,11 +41,16 @@
   font-style: italic;
 }
 
-.movable-memories-table {
+/* ==========================================================================
+   CSS GRID CONTAINER — DETERMINISTIC NORMAL FLOW
+   ========================================================================== */
+
+.movable-memories-grid {
   position: relative;
-  width: 100%;
-  min-height: clamp(620px, 74vh, 760px);
-  padding: clamp(20px, 2.5vw, 36px);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px 22px;
+  padding: clamp(24px, 3vw, 36px) clamp(16px, 2.5vw, 32px) clamp(32px, 4vw, 48px);
   border-radius: var(--radius-xl);
   background:
     radial-gradient(ellipse at 50% 35%, rgba(255, 255, 255, 0.75) 0%, rgba(248, 240, 232, 0.5) 65%, rgba(243, 233, 224, 0.35) 100%),
@@ -56,14 +62,20 @@
   border: 1px solid rgba(222, 194, 155, 0.35);
 }
 
+/* ==========================================================================
+   MEMORY CARD — RELATIVE GRID ITEM
+   ========================================================================== */
+
 .movable-memories-card {
-  position: absolute;
-  max-width: 260px;
+  position: relative;
+  width: 100%;
+  max-width: 275px;
+  margin: 0 auto;
   transform-origin: center center;
-  will-change: transform, left, top;
   user-select: none;
   outline: none;
   border-radius: var(--radius-sm);
+  cursor: grab;
   transition: box-shadow var(--transition-normal);
 }
 
@@ -75,6 +87,7 @@
 .movable-memories-card.is-dragging {
   cursor: grabbing !important;
   z-index: 100 !important;
+  touch-action: none;
 }
 
 .movable-photo-frame {
@@ -140,42 +153,58 @@
   font-style: italic;
 }
 
+/* ==========================================================================
+   EDITORIAL TRANSFORMS — DESKTOP (4 & 3 COLUMNS)
+   ========================================================================== */
+
 @media (min-width: 769px) {
-  .movable-memories-table {
+  .movable-memories-grid {
     touch-action: none;
   }
+
+  .movable-memories-card:nth-child(1) { transform: rotate(-2deg) scale(1.02); }
+  .movable-memories-card:nth-child(2) { transform: rotate(1.4deg) translateY(12px); }
+  .movable-memories-card:nth-child(3) { transform: rotate(-1.2deg) translateY(-8px); }
+  .movable-memories-card:nth-child(4) { transform: rotate(2deg); }
+  .movable-memories-card:nth-child(5) { transform: rotate(1.6deg) translateY(10px); }
+  .movable-memories-card:nth-child(6) { transform: rotate(-2.4deg) translateY(-10px); }
+  .movable-memories-card:nth-child(7) { transform: rotate(1.2deg) translateY(8px); }
+  .movable-memories-card:nth-child(8) { transform: rotate(-1.6deg); }
 }
+
+@media (max-width: 1080px) and (min-width: 769px) {
+  .movable-memories-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px 18px;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE SCRAPBOOK — TABLET & MOBILE (2 COLUMNS)
+   ========================================================================== */
 
 @media (max-width: 768px) {
   .movable-memories {
     padding: 36px 14px 48px;
   }
 
-  .movable-memories-table {
-    min-height: auto;
-    display: grid;
+  .movable-memories-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px 12px;
-    padding: 18px 14px;
+    padding: 18px 12px 24px;
     border-radius: var(--radius-lg);
   }
 
   .movable-memories-card {
-    position: relative !important;
-    left: auto !important;
-    top: auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto;
+    cursor: pointer;
   }
 
   .movable-memories-card:nth-child(1) { transform: rotate(-1.2deg); margin-top: 0; }
-  .movable-memories-card:nth-child(2) { transform: rotate(1.4deg); margin-top: 14px; }
-  .movable-memories-card:nth-child(3) { transform: rotate(1.0deg); margin-top: -6px; }
-  .movable-memories-card:nth-child(4) { transform: rotate(-1.2deg); margin-top: 8px; }
+  .movable-memories-card:nth-child(2) { transform: rotate(1.4deg); margin-top: 10px; }
+  .movable-memories-card:nth-child(3) { transform: rotate(1.0deg); margin-top: -4px; }
+  .movable-memories-card:nth-child(4) { transform: rotate(-1.2deg); margin-top: 6px; }
   .movable-memories-card:nth-child(5) { transform: rotate(-0.8deg); margin-top: 0; }
-  .movable-memories-card:nth-child(6) { transform: rotate(1.2deg); margin-top: 12px; }
+  .movable-memories-card:nth-child(6) { transform: rotate(1.2deg); margin-top: 10px; }
   .movable-memories-card:nth-child(7) { transform: rotate(1.0deg); margin-top: -4px; }
-  .movable-memories-card:nth-child(8) { transform: rotate(-1.2deg); margin-top: 10px; }
+  .movable-memories-card:nth-child(8) { transform: rotate(-1.2deg); margin-top: 8px; }
 }
-
