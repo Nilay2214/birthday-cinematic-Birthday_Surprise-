@@ -1,7 +1,7 @@
 const birthdayData = {
   name: "Sakshi",
   nickname: "Cartoon",
-  birthDate: "2026-08-15",
+  birthDate: "2026-08-20",
   birthYear: 2005,
   birthdayMessage: "Today is about celebrating the person who makes ordinary moments feel a little more special.",
   openingMessage: "Today isn't just another day.\nIt's a day made for celebrating you.",
