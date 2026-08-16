@@ -9,27 +9,85 @@ gsap.registerPlugin(ScrollTrigger)
 
 const DRAG_THRESHOLD = 8
 
-const scatterLayout = [
+// 100% Deterministic Initial Card Layout (Reference design measured from verified localhost layout)
+const INITIAL_MEMORIES = [
   // 0: HERO CARD (Center-Anchor)
-  { x: 46, y: 46, rotate: 2.2, scale: 1.05, w: 255, isHero: true },
+  {
+    left: '35.7%',
+    top: '16.2%',
+    width: 255,
+    rotate: 2.2,
+    scale: 1.05,
+    z: 8,
+    isHero: true,
+  },
   // 1: Primary (Mid-Left)
-  { x: 18, y: 42, rotate: -3.2, scale: 0.98, w: 235 },
+  {
+    left: '8.5%',
+    top: '14.2%',
+    width: 235,
+    rotate: -3.2,
+    scale: 0.98,
+    z: 3,
+  },
   // 2: Supporting (Upper-Center)
-  { x: 36, y: 18, rotate: 1.5, scale: 0.95, w: 210 },
+  {
+    left: '27.5%',
+    top: '2.5%',
+    width: 210,
+    rotate: 1.5,
+    scale: 0.95,
+    z: 2,
+  },
   // 3: Primary (Upper-Right)
-  { x: 74, y: 22, rotate: -2.1, scale: 1.00, w: 235 },
+  {
+    left: '64.5%',
+    top: '2.5%',
+    width: 235,
+    rotate: -2.1,
+    scale: 1.00,
+    z: 4,
+  },
   // 4: Primary (Mid-Right)
-  { x: 82, y: 52, rotate: -1.8, scale: 0.98, w: 230 },
+  {
+    left: '72.7%',
+    top: '24.8%',
+    width: 230,
+    rotate: -1.8,
+    scale: 0.98,
+    z: 4,
+  },
   // 5: Supporting (Lower-Center)
-  { x: 58, y: 72, rotate: 2.2, scale: 0.96, w: 215 },
+  {
+    left: '49.3%',
+    top: '46.0%',
+    width: 215,
+    rotate: 2.2,
+    scale: 0.96,
+    z: 5,
+  },
   // 6: Supporting (Bottom-Left)
-  { x: 16, y: 78, rotate: -2.7, scale: 0.94, w: 205 },
+  {
+    left: '7.7%',
+    top: '48.0%',
+    width: 205,
+    rotate: -2.7,
+    scale: 0.94,
+    z: 1,
+  },
   // 7: Supporting (Bottom-Right)
-  { x: 82, y: 80, rotate: 1.8, scale: 0.95, w: 210 },
+  {
+    left: '73.5%',
+    top: '47.0%',
+    width: 210,
+    rotate: 1.8,
+    scale: 0.95,
+    z: 3,
+  },
 ]
 
-function getScatter(index) {
-  return scatterLayout[index % scatterLayout.length]
+function getInitialConfig(index) {
+  return INITIAL_MEMORIES[index % INITIAL_MEMORIES.length]
 }
 
 export default function MovableMemories() {
@@ -40,115 +98,24 @@ export default function MovableMemories() {
   const sectionMessage = birthdayData.sectionMessages?.movableMemories || ''
   const tableRef = useRef(null)
   const cardsRef = useRef([])
-  const positionsRef = useRef([])
+  const [movedPositions, setMovedPositions] = useState({})
+  const [lightboxIndex, setLightboxIndex] = useState(null)
+  const [failedImages, setFailedImages] = useState({})
+  const topZ = useRef(20)
+
   const draggingRef = useRef({
     index: null,
     startX: 0,
     startY: 0,
-    origX: 0,
-    origY: 0,
-    origRotate: 0,
+    origLeft: 0,
+    origTop: 0,
     isDragging: false,
     moved: false,
   })
-  const topZ = useRef(30)
-  const [lightboxIndex, setLightboxIndex] = useState(null)
-  const [isMobile, setIsMobile] = useState(false)
-  const [failedImages, setFailedImages] = useState({})
 
-  const checkMobile = useCallback(() => {
-    return typeof window !== 'undefined' && (window.innerWidth <= 768 || window.matchMedia('(max-width: 768px)').matches)
-  }, [])
-
-  const [positions, setPositions] = useState([])
-
-  const computePositions = useCallback(() => {
-    if (!tableRef.current || photos.length === 0) return []
-    const tableEl = tableRef.current
-    const rect = tableEl.getBoundingClientRect()
-    const tableWidth = rect.width || tableEl.offsetWidth || tableEl.clientWidth || (typeof window !== 'undefined' ? Math.min(1240, window.innerWidth - 48) : 1200)
-    const tableHeight = rect.height || tableEl.offsetHeight || tableEl.clientHeight || 700
-
-    return photos.map((_, index) => {
-      const layout = getScatter(index)
-      const cardW = layout.w
-      const cardH = cardW * 1.25 + 50
-
-      const rawX = (layout.x / 100) * tableWidth
-      const rawY = (layout.y / 100) * tableHeight
-
-      const left = Math.max(16, Math.min(tableWidth - cardW - 16, rawX - cardW / 2))
-      const top = Math.max(16, Math.min(tableHeight - cardH - 16, rawY - cardH / 2))
-
-      return {
-        left,
-        top,
-        rotate: layout.rotate,
-        scale: layout.scale,
-        width: cardW,
-        height: cardH,
-        z: index + 1,
-      }
-    })
-  }, [photos])
-
-  // Sync positions state with table dimensions and viewport
+  // GSAP ScrollTrigger intro animation with selective clearProps
   useEffect(() => {
     if (!tableRef.current || photos.length === 0) return
-
-    const updateAll = () => {
-      const isMob = checkMobile()
-      setIsMobile(isMob)
-
-      if (!isMob) {
-        const next = computePositions()
-        setPositions((prev) => {
-          if (prev.length === 0) return next
-          return next.map((n, i) => {
-            const p = prev[i]
-            if (p && p.customMoved) {
-              return { ...n, left: p.left, top: p.top, z: p.z }
-            }
-            return n
-          })
-        })
-      }
-    }
-
-    updateAll()
-    const frameId = requestAnimationFrame(updateAll)
-    const timerId = setTimeout(updateAll, 50)
-
-    const ro = new ResizeObserver(() => {
-      requestAnimationFrame(updateAll)
-    })
-    ro.observe(tableRef.current)
-
-    const io = new IntersectionObserver((entries) => {
-      if (entries.some((e) => e.isIntersecting)) {
-        updateAll()
-      }
-    }, { threshold: [0, 0.25, 0.5, 0.75, 1] })
-    io.observe(tableRef.current)
-
-    window.addEventListener('resize', updateAll)
-
-    if (document.fonts?.ready) {
-      document.fonts.ready.then(updateAll)
-    }
-
-    return () => {
-      cancelAnimationFrame(frameId)
-      clearTimeout(timerId)
-      ro.disconnect()
-      io.disconnect()
-      window.removeEventListener('resize', updateAll)
-    }
-  }, [photos, computePositions, checkMobile])
-
-  // GSAP ScrollTrigger intro animation
-  useEffect(() => {
-    if (!tableRef.current || photos.length === 0 || isMobile) return
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) return
@@ -164,7 +131,7 @@ export default function MovableMemories() {
             autoAlpha: 0,
             duration: 0.7,
             ease: 'power2.out',
-            clearProps: 'all',
+            clearProps: 'opacity,visibility',
           },
           index * 0.07
         )
@@ -179,28 +146,28 @@ export default function MovableMemories() {
     }, tableRef)
 
     return () => ctx.revert()
-  }, [photos, isMobile])
+  }, [photos])
 
+  // Drag interaction system
   useEffect(() => {
     const table = tableRef.current
-    if (!table || isMobile) return
+    if (!table) return
 
     const handlePointerDown = (e) => {
+      // Ignore if on mobile viewport
+      if (window.innerWidth <= 768) return
+
       const cardEl = e.target.closest('.movable-memories-card')
       if (!cardEl) return
       const index = cardsRef.current.indexOf(cardEl)
       if (index === -1) return
 
-      const pos = positions[index]
-      if (!pos) return
-
       draggingRef.current = {
         index,
         startX: e.clientX,
         startY: e.clientY,
-        origX: pos.left,
-        origY: pos.top,
-        origRotate: pos.rotate,
+        origLeft: cardEl.offsetLeft,
+        origTop: cardEl.offsetTop,
         isDragging: false,
         moved: false,
       }
@@ -229,19 +196,19 @@ export default function MovableMemories() {
 
       e.preventDefault()
       const cardEl = cardsRef.current[drag.index]
-      const pos = positions[drag.index]
-      if (!cardEl || !pos) return
+      const cfg = getInitialConfig(drag.index)
+      if (!cardEl || !cfg) return
 
       const rect = table.getBoundingClientRect()
-      const cardW = pos.width || 220
-      const cardH = pos.height || (cardW * 1.25 + 50)
+      const cardW = cardEl.offsetWidth || cfg.width || 230
+      const cardH = cardEl.offsetHeight || (cardW * 1.25 + 50)
 
-      const curLeft = Math.max(16, Math.min(rect.width - cardW - 16, drag.origX + dx))
-      const curTop = Math.max(16, Math.min(rect.height - cardH - 16, drag.origY + dy))
+      const curLeft = Math.max(16, Math.min(rect.width - cardW - 16, drag.origLeft + dx))
+      const curTop = Math.max(16, Math.min(rect.height - cardH - 16, drag.origTop + dy))
 
       cardEl.style.left = `${curLeft}px`
       cardEl.style.top = `${curTop}px`
-      cardEl.style.transform = `rotate(${pos.rotate + 1.2}deg) scale(${pos.scale * 1.06})`
+      cardEl.style.transform = `rotate(${cfg.rotate + 1.2}deg) scale(${cfg.scale * 1.06})`
       cardEl.style.boxShadow = '0 52px 100px rgba(84, 37, 54, 0.24), 0 16px 40px rgba(26, 14, 20, 0.2)'
     }
 
@@ -251,30 +218,25 @@ export default function MovableMemories() {
 
       const index = drag.index
       const cardEl = cardsRef.current[index]
-      const pos = positions[index]
+      const cfg = getInitialConfig(index)
 
-      if (drag.isDragging && cardEl && pos) {
+      if (drag.isDragging && cardEl && cfg) {
         cardEl.classList.remove('is-dragging')
         cardEl.style.boxShadow = ''
         const rect = table.getBoundingClientRect()
-        const cardW = pos.width || 220
-        const cardH = pos.height || (cardW * 1.25 + 50)
-        const finalLeft = Math.max(16, Math.min(rect.width - cardW - 16, drag.origX + (e.clientX - drag.startX)))
-        const finalTop = Math.max(16, Math.min(rect.height - cardH - 16, drag.origY + (e.clientY - drag.startY)))
+        const cardW = cardEl.offsetWidth || cfg.width || 230
+        const cardH = cardEl.offsetHeight || (cardW * 1.25 + 50)
+        const finalLeft = Math.max(16, Math.min(rect.width - cardW - 16, drag.origLeft + (e.clientX - drag.startX)))
+        const finalTop = Math.max(16, Math.min(rect.height - cardH - 16, drag.origTop + (e.clientY - drag.startY)))
 
-        setPositions((prev) => {
-          const next = [...prev]
-          if (next[index]) {
-            next[index] = {
-              ...next[index],
-              left: finalLeft,
-              top: finalTop,
-              z: topZ.current,
-              customMoved: true,
-            }
-          }
-          return next
-        })
+        setMovedPositions((prev) => ({
+          ...prev,
+          [index]: {
+            left: `${finalLeft}px`,
+            top: `${finalTop}px`,
+            z: topZ.current,
+          },
+        }))
       } else if (!drag.moved) {
         setLightboxIndex(index)
       }
@@ -283,9 +245,8 @@ export default function MovableMemories() {
         index: null,
         startX: 0,
         startY: 0,
-        origX: 0,
-        origY: 0,
-        origRotate: 0,
+        origLeft: 0,
+        origTop: 0,
         isDragging: false,
         moved: false,
       }
@@ -300,7 +261,7 @@ export default function MovableMemories() {
       window.removeEventListener('pointermove', handlePointerMove)
       window.removeEventListener('pointerup', handlePointerUp)
     }
-  }, [isMobile, positions])
+  }, [])
 
   const handleCardActivate = (index) => {
     if (draggingRef.current.moved) return
@@ -316,9 +277,7 @@ export default function MovableMemories() {
           <h2 className="section-title">Some memories are better when you play with them.</h2>
           {sectionMessage && <p className="section-copy">{sectionMessage}</p>}
           <p className="movable-memories-hint">
-            {isMobile
-              ? 'Tap a photograph to view it full size.'
-              : 'Some memories are better when you arrange them yourself.'}
+            Some memories are better when you arrange them yourself.
           </p>
         </header>
 
@@ -327,21 +286,16 @@ export default function MovableMemories() {
         ) : (
           <div className="movable-memories-table" ref={tableRef} aria-label="Interactive memory table">
             {photos.map((photo, index) => {
-              const pos = positions[index]
-              const cardStyle = isMobile
-                ? { cursor: 'pointer' }
-                : {
-                    cursor: 'grab',
-                    ...(pos
-                      ? {
-                          left: `${pos.left}px`,
-                          top: `${pos.top}px`,
-                          width: `${pos.width}px`,
-                          zIndex: pos.z,
-                          transform: `rotate(${pos.rotate}deg) scale(${pos.scale})`,
-                        }
-                      : {}),
-                  }
+              const cfg = getInitialConfig(index)
+              const custom = movedPositions[index]
+
+              const cardStyle = {
+                left: custom ? custom.left : cfg.left,
+                top: custom ? custom.top : cfg.top,
+                width: `${cfg.width}px`,
+                zIndex: custom ? custom.z : cfg.z,
+                transform: `rotate(${cfg.rotate}deg) scale(${cfg.scale})`,
+              }
 
               return (
                 <div
@@ -351,7 +305,7 @@ export default function MovableMemories() {
                   style={cardStyle}
                   tabIndex={0}
                   role="button"
-                  aria-label={`Memory: ${photo.caption || photo.label}. ${isMobile ? 'Tap to view.' : 'Drag to move, click to view.'}`}
+                  aria-label={`Memory: ${photo.caption || photo.label}. Drag to move, click to view.`}
                   onClick={() => handleCardActivate(index)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
