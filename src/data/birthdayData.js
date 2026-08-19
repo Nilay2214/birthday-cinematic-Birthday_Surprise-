@@ -6,7 +6,7 @@ const birthdayData = {
   birthdayMessage: "Today is about celebrating the person who makes ordinary moments feel a little more special.",
   openingMessage: "Today isn't just another day.\nIt's a day made for celebrating you.",
   finalMessage:
-    "Sakshi, I hope this year gives you more reasons to smile, more places to explore, more dreams to chase, and more moments that make you stop and realize how far you've come.\n\nI love the way you are completely yourself, and I hope you never lose that.\n\nKeep growing.\nKeep dreaming.\nKeep laughing at the little things.\nKeep being the person I’m so lucky to call my girlfriend.\n\nHappy Birthday, Sakshi.\nI hope this year is as beautiful as you are.",
+    "Sakshi, I hope this year gives you more reasons to smile, more places to explore, more dreams to chase, and more moments that make you stop and realize how far you've come.\n\nI love the way you are completely yourself, and I hope you never lose that.\n\nKeep growing.\nKeep dreaming.\nKeep laughing at the little things.\nKeep being the person I’m so lucky to call my Bestfriend.\n\nHappy Birthday, Sakshi.\nI hope this year is as beautiful as you are.",
   finalSignature: "With all my love,\nNilay ❤️",
   finalClosing: {
   status: "Official Birthday Review:\n10/10 ✦",
